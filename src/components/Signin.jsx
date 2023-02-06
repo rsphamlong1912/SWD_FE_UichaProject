@@ -1,25 +1,38 @@
 import React, { useState } from 'react'
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from '../context/AuthContext';
 
 const Signin = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate()
     const { signIn } = UserAuth()
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setError('')
+    //     try {
+    //         await signIn(email, password)
+    //         navigate('/account')
+    //     } catch (e) {
+    //         setError(e.message)
+    //         console.log(e.message)
+    //     }
+    // };
+
+    const onSubmit = handleSubmit(async (data) => {
+        console.log(data)
         setError('')
         try {
-            await signIn(email, password)
+            await signIn(data.email, data.password)
             navigate('/account')
         } catch (e) {
-            setError(e.message)
-            console.log(e.message)
+            setError("Tài khoản hoặc mật khẩu không chính xác!")
         }
-    };
+    })
 
     return (
         <div className="px-6 h-full text-gray-800 max-w-[1024px] mx-auto my-20 p-4">
@@ -37,7 +50,7 @@ const Signin = () => {
                     />
                 </div>
                 <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={onSubmit}>
                         <div className="flex flex-row items-center justify-center lg:justify-start">
                             <p className="text-lg mb-0 mr-4">Sign in with</p>
                             <button
@@ -103,7 +116,26 @@ const Signin = () => {
                                 className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 id="email"
                                 placeholder="Email address"
+                                {...register('email', {
+                                    required: {
+                                        value: true,
+                                        message: 'Email là bắt buộc'
+                                    },
+                                    pattern: {
+                                        value: /^\S+@\S+\.\S+$/,
+                                        message: 'Email không đúng định dạng'
+                                    },
+                                    maxLength: {
+                                        value: 160,
+                                        message: 'Độ dài từ 5-160 ký tự'
+                                    },
+                                    minLength: {
+                                        value: 5,
+                                        message: 'Độ dài từ 5-160 ký tự'
+                                    }
+                                })}
                             />
+                            <div className='mt-1 min-h-[1rem] text-sm text-red-600'>{errors.email?.message}</div>
                         </div>
 
 
@@ -114,7 +146,22 @@ const Signin = () => {
                                 className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 id="password"
                                 placeholder="Password"
+                                {...register('password', {
+                                    required: {
+                                        value: true,
+                                        message: 'Password là bắt buộc'
+                                    },
+                                    maxLength: {
+                                        value: 160,
+                                        message: 'Độ dài từ 6-160 ký tự'
+                                    },
+                                    minLength: {
+                                        value: 6,
+                                        message: 'Độ dài từ 6-160 ký tự'
+                                    }
+                                })}
                             />
+                            <div className='mt-1 min-h-[1rem] text-sm text-red-600'>{errors.password?.message}</div>
                         </div>
 
                         <div className="flex justify-between items-center mb-6">
@@ -138,6 +185,7 @@ const Signin = () => {
                             >
                                 Login
                             </button>
+                            <div className='mt-1 min-h-[1.5rem] text-md text-red-600'>{error}</div>
                             <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                                 Don't have an account? {" "}
                                 <Link to="/signup" className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out">Register.</Link>
