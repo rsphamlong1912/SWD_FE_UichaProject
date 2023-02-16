@@ -9,6 +9,7 @@ const Account = () => {
   const handleLogout = async () => {
     try {
       await logout()
+      localStorage.removeItem('tokens');
       navigate('/');
       console.log('You are logged out')
 

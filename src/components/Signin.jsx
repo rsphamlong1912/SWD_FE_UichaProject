@@ -5,6 +5,7 @@ import { UserAuth } from '../context/AuthContext';
 import { auth, provider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth'
 import GoogleButton from 'react-google-button'
+import { api } from '../services/axios';
 
 const Signin = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -26,11 +27,34 @@ const Signin = () => {
     })
 
     const handleGoogleSignInClick = () => {
-        signInWithPopup(auth, provider).then((data) => {
-            setValue(data.user.email)
-            localStorage.setItem("email", data.user.email)
-            navigate('/account')
-        })
+        signInWithPopup(auth, provider)
+            .then((data) => {
+                setValue(data.user.email)
+                localStorage.setItem("email", data.user.email)
+                //Lấy thông tin người dùng từ backend
+                api.post('/login')
+                    .then((response) => {
+                        console.log(response.data);
+                        const { accessToken, refreshToken } = response.data;
+                        const tokens = {
+                            accessToken: accessToken,
+                            refreshToken: refreshToken,
+                        };
+                        //Lưu token vào local storage
+                        localStorage.setItem('tokens', JSON.stringify(tokens));
+
+                        //Lấy accessToken
+                        //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
+                        // const accessToken = storedTokens.accessToken;
+                        // const refreshToken = storedTokens.refreshToken;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                navigate('/account')
+            }).catch(function (error) {
+                console.log(error)
+            });
     }
 
     useEffect(() => {
