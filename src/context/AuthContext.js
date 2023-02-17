@@ -40,27 +40,27 @@ export const AuthContextProvider = ({ children }) => {
             return config;
           });
         });
-        api
-          .post("/login")
-          .then((response) => {
-            console.log(response.data);
-            const { accessToken, refreshToken } = response.data;
-            const tokens = {
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-            };
-            //Lưu token vào local storage
-            localStorage.setItem("tokens", JSON.stringify(tokens));
+        // api
+        //   .post("/login")
+        //   .then((response) => {
+        //     console.log(response.data);
+        //     const { accessToken, refreshToken } = response.data;
+        //     const tokens = {
+        //       accessToken: accessToken,
+        //       refreshToken: refreshToken,
+        //     };
+        //     //Lưu token vào local storage
+        //     localStorage.setItem("tokens", JSON.stringify(tokens));
 
-            //Lấy accessToken
-            //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
-            // const accessToken = storedTokens.accessToken;
-            // const refreshToken = storedTokens.refreshToken;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        navigate("/account");
+        //     //Lấy accessToken
+        //     //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
+        //     // const accessToken = storedTokens.accessToken;
+        //     // const refreshToken = storedTokens.refreshToken;
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
+        // navigate("/account");
       } else {
         console.log("User is signed out");
         api.interceptors.request.eject();
