@@ -1,9 +1,10 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from '../context/AuthContext';
 import { auth, provider } from '../firebase';
-import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 import GoogleButton from 'react-google-button'
 import { api } from '../services/axios';
 
@@ -13,6 +14,7 @@ const Signin = () => {
     const navigate = useNavigate()
     const { signIn } = UserAuth()
 
+    // eslint-disable-next-line no-unused-vars
     const [value, setValue] = useState('')
 
     const onSubmit = handleSubmit(async (data) => {
@@ -58,6 +60,7 @@ const Signin = () => {
         // signInWithRedirect(auth, provider)
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setValue(localStorage.getItem('email'))
     })

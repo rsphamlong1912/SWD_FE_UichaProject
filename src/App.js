@@ -1,10 +1,19 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Signin from "./components/Signin";
-import Signup from "./components/Signup";
-import Account from "./components/Account";
+import Account from "./pages/Account";
+import Home from "./pages/Home";
+import Tables from "./pages/Tables";
+import Billing from "./pages/Billing";
+import Rtl from "./pages/Rtl";
+import Profile from "./pages/Profile";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/Signin";
+import Main from "./components/layout/Main";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import "antd/dist/antd.min.css";
+import "./assets/styles/main.css";
+import "./assets/styles/responsive.css";
 import { AuthContextProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -14,8 +23,8 @@ function App() {
       </h1>
       <AuthContextProvider>
         <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route
             path="/account"
             element={
@@ -24,6 +33,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/dashboard" element={<Home />} />
+          <Route path="/tables" element={<Tables />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/rtl" element={<Rtl />} />
+          <Route path="/profile" element={<Profile />} />
+          {/* <Redirect from="*" to="/dashboard" /> */}
         </Routes>
       </AuthContextProvider>
     </div>
