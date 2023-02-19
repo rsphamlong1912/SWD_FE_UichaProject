@@ -57,7 +57,6 @@ const Signin = () => {
             }).catch(function (error) {
                 console.log(error)
             });
-        // signInWithRedirect(auth, provider)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
