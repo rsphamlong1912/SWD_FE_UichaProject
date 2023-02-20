@@ -10,6 +10,7 @@ const Account = () => {
     try {
       await logout()
       localStorage.removeItem('tokens');
+      localStorage.removeItem('email');
       navigate('/');
       console.log('You are logged out')
 
