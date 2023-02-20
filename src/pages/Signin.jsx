@@ -30,13 +30,15 @@ const Signin = () => {
 
     const handleGoogleSignInClick = async () => {
         signInWithPopup(auth, provider)
-            .then((data) => {
-                setValue(data.user.email)
-                localStorage.setItem("email", data.user.email)
-                //Lấy thông tin người dùng từ backend
-                api.post('/login')
+            .then((res) => {
+                setValue(res.user.email)
+                localStorage.setItem("email", res.user.email)
+                const data = {
+                    "idToken": res.user.accessToken
+                }
+                api.post('/login', data)
                     .then((response) => {
-                        console.log(response.data);
+                        console.log("API return:", response.data);
                         const { accessToken, refreshToken } = response.data;
                         const tokens = {
                             accessToken: accessToken,
