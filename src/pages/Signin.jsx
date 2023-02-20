@@ -7,8 +7,10 @@ import { auth, provider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth'
 import GoogleButton from 'react-google-button'
 import { api } from '../services/axios';
+// import { TokenContext } from '../App';
 
 const Signin = () => {
+    // const token = useContext(TokenContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [error, setError] = useState('');
     const navigate = useNavigate()
@@ -36,6 +38,7 @@ const Signin = () => {
                 const data = {
                     "idToken": res.user.accessToken
                 }
+                console.log("data", data)
                 api.post('/login', data)
                     .then((response) => {
                         console.log("API return:", response.data);
@@ -46,16 +49,13 @@ const Signin = () => {
                         };
                         //Lưu token vào local storage
                         localStorage.setItem('tokens', JSON.stringify(tokens));
-
-                        //Lấy accessToken
-                        //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
-                        // const accessToken = storedTokens.accessToken;
-                        // const refreshToken = storedTokens.refreshToken;
+                        api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+                        navigate('/account')
                     })
                     .catch((error) => {
                         console.log(error);
                     });
-                navigate('/account')
+
             }).catch(function (error) {
                 console.log(error)
             });
