@@ -1,14 +1,3 @@
-/*!
-=========================================================
-* Muse Ant Design Dashboard - v1.0.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-* Coded by Creative Tim
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 import {
   Row,
   Col,
@@ -22,7 +11,6 @@ import {
   Avatar,
   Typography,
 } from "antd";
-
 import { ToTopOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -586,7 +574,7 @@ const dataproject = [
   },
 ];
 
-function Tables() {
+function Customers() {
   const onChange = (e) => console.log(`radio checked:${e.target.value}`);
 
   return (
@@ -658,4 +646,4 @@ function Tables() {
   );
 }
 
-export default Tables;
+export default Customers;

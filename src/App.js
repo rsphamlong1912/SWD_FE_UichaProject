@@ -1,30 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Account from "./pages/Account";
-import Home from "./pages/Home";
-import Tables from "./pages/Tables";
+import Dashboard from "./pages/Dashboard";
+import Customers from "./pages/Customers";
 import Billing from "./pages/Billing";
-import Rtl from "./pages/Rtl";
 import Profile from "./pages/Profile";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/Signin";
+import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import "antd/dist/antd.min.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
 import { AuthContextProvider } from "./context/AuthContext";
+import { getToken } from "firebase/messaging";
+import { messaging } from "./firebase";
 
 function App() {
+
+
+  async function requestPermission() {
+    const permission = await Notification.requestPermission()
+    if (permission === "granted") {
+        const token = await getToken(messaging, {
+          vapidKey:
+            "BDYnLI-lWyP8cZUlOscmyqO4VGNVWVCMkio1T8ZZOoVW227bA-UoTYX4N_QpXzJOOjayK79OvJg_p00PnqyolZM",
+        })
+        console.log('Token Gen', token)
+      }else if(permission === "denied") {
+        alert('you denied for the notification')
+      }
+  }
+  
+  
+  useEffect(()=>{
+    requestPermission()
+  },[])
+  
+
   return (
-    <div>
-      <h1 className="text-center text-3xl font-bold my-5">
-        UiCha Firebase Authentication
-      </h1>
+    <>
       <AuthContextProvider>
         <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/sign-in" element={<SignIn />} />
           <Route
             path="/account"
             element={
@@ -33,15 +50,17 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/dashboard" element={<Home />} />
-          <Route path="/tables" element={<Tables />} />
-          <Route path="/billing" element={<Billing />} />
-          <Route path="/rtl" element={<Rtl />} />
-          <Route path="/profile" element={<Profile />} />
-          {/* <Redirect from="*" to="/dashboard" /> */}
+          <Route path="/" element={<Main />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="customers" element={<Customers />} />
+            <Route path="billing" element={<Billing />} />
+            <Route path="profile" element={<Profile />} />
+            <Route from="*" to="/dashboard" />
+          </Route>
         </Routes>
       </AuthContextProvider>
-    </div>
+    </>
   );
 }
 

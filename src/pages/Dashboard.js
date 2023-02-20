@@ -1,16 +1,4 @@
-/*!
-  =========================================================
-  * Muse Ant Design Dashboard - v1.0.0
-  =========================================================
-  * Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-  * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-  * Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-  * Coded by Creative Tim
-  =========================================================
-  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 import { useState } from "react";
-
 import {
   Card,
   Col,
@@ -23,11 +11,12 @@ import {
   Button,
   Timeline,
   Radio,
+  Space,
 } from "antd";
 import {
-  ToTopOutlined,
   MenuUnfoldOutlined,
   RightOutlined,
+  FileOutlined,
 } from "@ant-design/icons";
 import Paragraph from "antd/lib/typography/Paragraph";
 
@@ -45,12 +34,14 @@ import team2 from "../assets/images/team-2.jpg";
 import team3 from "../assets/images/team-3.jpg";
 import team4 from "../assets/images/team-4.jpg";
 import card from "../assets/images/info-card-1.jpg";
+import axios from "axios";
 
-function Home() {
+const Dashboard = () => {
   const { Title, Text } = Typography;
 
   const onChange = (e) => console.log(`radio checked:${e.target.value}`);
 
+  const [files, setFiles] = useState({});
   const [reverse, setReverse] = useState(false);
 
   const dollor = [
@@ -322,13 +313,53 @@ function Home() {
     },
   ];
 
+  const handleFileUpload = ({ file }) => {
+    const getFileObject = (progress, estimated) => {
+      return {
+        name: file.name,
+        uid: file.uid,
+        progress: progress,
+        estimated: estimated || 0,
+      };
+    };
+
+    axios.post(
+      "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      file,
+      {
+        onUploadProgress: (event) => {
+          console.log(event);
+          setFiles((pre) => {
+            return {
+              ...pre,
+              [file.uid]: getFileObject(event.progress, event.estimated),
+            };
+          });
+        },
+      }
+    );
+  };
+
+  const getTimeString = (timeInSeconds) => {
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor(timeInSeconds / 60 - hours * 60);
+    const seconds = Math.floor(timeInSeconds - minutes * 60 - hours * 3600);
+    let timeString = `${seconds} sec`;
+    if (minutes) {
+      timeString = `${minutes} min ${timeString}`;
+    }
+    if (hours) {
+      timeString = `${hours} hrs ${timeString}`;
+    }
+    return timeString;
+  };
+
   const uploadProps = {
     name: "file",
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     headers: {
       authorization: "authorization-text",
     },
-
     onChange(info) {
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
@@ -445,7 +476,7 @@ function Home() {
                 </table>
               </div>
               <div className="uploadfile shadow-none">
-                <Upload {...uploadProps}>
+                {/* <Upload {...uploadProps}>
                   <Button
                     type="dashed"
                     className="ant-full-box"
@@ -453,7 +484,47 @@ function Home() {
                   >
                     <span className="click">Click to Upload</span>
                   </Button>
-                </Upload>
+                </Upload> */}
+                <Space direction="vertical" style={{width: '100%'}}>
+                  <Upload.Dragger
+                    multiple
+                    customRequest={handleFileUpload}
+                    showUploadList={false}
+                    style={{width: '100%'}}
+                  >
+                    Dragger files here OR <Button>Click to Upload</Button>
+                  </Upload.Dragger>
+                  {Object.values(files).map((file, index) => {
+                    return (
+                      <Space
+                        direction="vertical"
+                        key={index}
+                        style={{
+                          backgroundColor: "rgba(0,0,0,0.05)",
+                          width: 500,
+                          padding: 8,
+                        }}
+                      >
+                        <Space>
+                          <FileOutlined />
+                          <Typography>{file.name}</Typography>
+                          {file.estimated ? (
+                            <Typography.Text type="secondary">
+                              {" "}
+                              is being uploaded in{" "}
+                              {getTimeString(file.estimated)} seconds
+                            </Typography.Text>
+                          ) : (
+                            <Typography.Text type="secondary">
+                              is Uploaded Succesfully
+                            </Typography.Text>
+                          )}
+                        </Space>
+                        <Progress percent={Math.ceil(file.progress * 100)} />
+                      </Space>
+                    );
+                  })}
+                </Space>
               </div>
             </Card>
           </Col>
@@ -526,7 +597,7 @@ function Home() {
                   xl={10}
                   className="col-img"
                 >
-                  <div className="ant-cret" style={{ textAlign: "left" }}>
+                  <div className="ant-cret text-right">
                     <img src={card} alt="" className="border10" />
                   </div>
                 </Col>
@@ -557,6 +628,6 @@ function Home() {
       </div>
     </>
   );
-}
+};
 
-export default Home;
+export default Dashboard;
