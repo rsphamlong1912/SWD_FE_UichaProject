@@ -41,6 +41,7 @@ export const AuthContextProvider = ({ children }) => {
         });
       } else {
         console.log("User is signed out");
+        setUser(null);
       }
     });
   });

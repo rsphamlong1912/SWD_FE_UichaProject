@@ -7,7 +7,7 @@ import Billing from "./pages/Billing";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
-import ProtectedRoute from "./pages/ProtectedRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import "antd/dist/antd.min.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
@@ -45,10 +45,10 @@ function App() {
           <Routes>
             <Route path="/sign-in" element={<SignIn />} />
             <Route
-              path="/account"
+              path="/profile"
               element={
                 <ProtectedRoute>
-                  <Account />
+                  <Profile />
                 </ProtectedRoute>
               }
             />
@@ -57,7 +57,6 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="customers" element={<Customers />} />
               <Route path="billing" element={<Billing />} />
-              <Route path="profile" element={<Profile />} />
               <Route from="*" to="/dashboard" />
             </Route>
           </Routes>

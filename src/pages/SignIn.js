@@ -51,6 +51,7 @@ const Signin = () => {
             };
             //Lưu token vào local storage
             localStorage.setItem("tokens", JSON.stringify(tokens));
+            window.location.href = "/profile";
 
             //Lấy accessToken
             //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
@@ -60,7 +61,6 @@ const Signin = () => {
           .catch((error) => {
             console.log(error);
           });
-        navigate("/account");
       })
       .catch(function (error) {
         console.log(error);
