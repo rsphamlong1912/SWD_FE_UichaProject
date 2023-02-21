@@ -125,7 +125,6 @@ const Header = ({
   const { Title, Text } = Typography;
 
   const [open, setOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(user);
   const [sidenavType, setSidenavType] = useState("transparent");
 
   useEffect(() => window.scrollTo(0, 0));
@@ -267,7 +266,7 @@ const Header = ({
           </Drawer>
           <Link to="/sign-in" className="btn-sign-in">
             <Profile />
-            <span>{currentUser && currentUser.displayName}</span>
+            <span>{user && user.displayName}</span>
           </Link>
           <Input
             className="header-search"

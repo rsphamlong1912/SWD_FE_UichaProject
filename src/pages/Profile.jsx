@@ -1,5 +1,8 @@
 
 import { useState } from "react";
+import { UserAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { api } from "../services/axios";
 
 import {
   Row,
@@ -35,6 +38,33 @@ import project3 from "../assets/images/home-decor-3.jpeg";
 import { Pencil } from "../components/Icons/Icons";
 
 const Profile = () => {
+  const { user, logout } = UserAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      localStorage.removeItem('tokens');
+      localStorage.removeItem('email');
+      console.log('You are logged out')
+      navigate('/');
+    } catch (e) {
+      console.log(e.message)
+    }
+  }
+
+  const handleTest = () => {
+    api.get("/agency/test")
+      .then(res => {
+        console.log(res)
+        alert('Lấy dữ liệu thành công!');
+      })
+      .catch(err => {
+        alert('Lấy dữ liệu thất bại!');
+        console.log(err)
+      })
+  }
+
   const [imageURL, setImageURL] = useState(false);
   const [, setLoading] = useState(false);
 
@@ -69,7 +99,7 @@ const Profile = () => {
     }
   };
 
- 
+
   const uploadButton = (
     <div className="ant-upload-text font-semibold text-dark">
       {<VerticalAlignTopOutlined style={{ width: 20, color: "#000" }} />}
@@ -136,6 +166,7 @@ const Profile = () => {
         style={{ backgroundImage: "url(" + BgProfile + ")" }}
       ></div>
 
+
       <Card
         className="card-profile-head"
         bodyStyle={{ display: "none" }}
@@ -143,11 +174,11 @@ const Profile = () => {
           <Row justify="space-between" align="middle" gutter={[24, 0]}>
             <Col span={24} md={12} className="col-info">
               <Avatar.Group>
-                <Avatar size={74} shape="square" src={profilavatar} />
+                <Avatar size={74} shape="square" src={user.photoURL} />
 
                 <div className="avatar-info">
-                  <h4 className="font-semibold m-0">Sarah Jacob</h4>
-                  <p>CEO / Co-Founder</p>
+                  <h4 className="font-semibold m-0">{user && user.displayName}</h4>
+                  <p>Admin</p>
                 </div>
               </Avatar.Group>
             </Col>
@@ -165,6 +196,8 @@ const Profile = () => {
                 <Radio.Button value="b">TEAMS</Radio.Button>
                 <Radio.Button value="c">PROJECTS</Radio.Button>
               </Radio.Group>
+              <button onClick={handleLogout} className="border px-6 py-2 my-4">Logout</button>
+              <button onClick={handleTest} className="border px-6 py-2 my-4">Test Author</button>
             </Col>
           </Row>
         }
@@ -219,7 +252,7 @@ const Profile = () => {
             bordered={false}
             title={<h6 className="font-semibold m-0">Profile Information</h6>}
             className="header-solid h-full card-profile-information"
-            extra={<Button type="link"><Pencil/></Button>}
+            extra={<Button type="link"><Pencil /></Button>}
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
             <p className="text-dark">
