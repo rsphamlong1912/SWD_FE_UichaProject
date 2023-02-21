@@ -32,20 +32,18 @@ export const AuthContextProvider = ({ children }) => {
         setUser(currentUser);
         console.log("User is signed in:", currentUser.uid);
 
-        // const storedTokens = JSON.parse(localStorage.getItem("tokens"));
-        // const accessToken = storedTokens.accessToken;
-        // console.log("Access Token api trả về nè: ", accessToken);
+        const storedTokens = JSON.parse(localStorage.getItem("tokens"));
+        const accessToken = storedTokens?.accessToken || null;
+
         api.interceptors.request.use((config) => {
-          config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJHOUFDZnVsaHJDVFpGaFRrbzJ4Z2t0TGlHTkMyIiwiaWF0IjoxNjc2OTQzOTYzLCJleHAiOjE2NzY5NDc1NjN9.CgCta7UNJAqFTQaQNyVGTyeiaBhUCzwlMLmhqVlCg_U
-        `;
+          config.headers.Authorization = `Bearer ${accessToken}`;
           return config;
         });
       } else {
         console.log("User is signed out");
-        api.interceptors.request.eject();
       }
     });
-  }, []);
+  });
 
   return (
     <UserContext.Provider value={{ createUser, user, logout, signIn }}>

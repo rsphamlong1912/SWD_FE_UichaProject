@@ -7,6 +7,7 @@ import { auth, provider } from '../firebase';
 import { signInWithPopup } from 'firebase/auth'
 import GoogleButton from 'react-google-button'
 import { api } from '../services/axios';
+
 // import { TokenContext } from '../App';
 
 const Signin = () => {
@@ -30,7 +31,7 @@ const Signin = () => {
         }
     })
 
-    const handleGoogleSignInClick = async () => {
+    const handleGoogleSignInClick = () => {
         signInWithPopup(auth, provider)
             .then((res) => {
                 setValue(res.user.email)
@@ -42,15 +43,9 @@ const Signin = () => {
                 api.post('/login', data)
                     .then((response) => {
                         console.log("API return:", response.data);
-                        const { accessToken, refreshToken } = response.data;
-                        const tokens = {
-                            accessToken: accessToken,
-                            refreshToken: refreshToken,
-                        };
                         //Lưu token vào local storage
-                        localStorage.setItem('tokens', JSON.stringify(tokens));
-                        api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-                        navigate('/account')
+                        localStorage.setItem('tokens', JSON.stringify(response.data));
+                        // api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;                        a
                     })
                     .catch((error) => {
                         console.log(error);
@@ -164,7 +159,7 @@ const Signin = () => {
                                     Login
                                 </button>
                                 <GoogleButton className='grow ml-4'
-                                    onClick={() => handleGoogleSignInClick()}
+                                    onClick={handleGoogleSignInClick}
                                 />
                             </div>
 
