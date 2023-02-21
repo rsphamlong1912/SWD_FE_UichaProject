@@ -24,8 +24,10 @@ const Account = () => {
     api.get("/agency/test")
       .then(res => {
         console.log(res)
+        alert('Lấy dữ liệu thành công!');
       })
       .catch(err => {
+        alert('Lấy dữ liệu thất bại!');
         console.log(err)
       })
   }
