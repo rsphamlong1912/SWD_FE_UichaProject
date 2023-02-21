@@ -29,13 +29,14 @@ function App() {
       setToken(token);
       console.log("Token Gen", token);
     } else if (permission === "denied") {
-      alert("you denied for the notification");
+      // alert("you denied for the notification");
+      console.log("you denied for the notification");
     }
   }
 
   useEffect(() => {
     requestPermission();
-  }, []);
+  });
 
   return (
     <>
