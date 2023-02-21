@@ -31,13 +31,14 @@ export const AuthContextProvider = ({ children }) => {
         console.log(currentUser);
         setUser(currentUser);
         console.log("User is signed in:", currentUser.uid);
-        // currentUser.getIdToken().then((accessToken) => {
-        //   // Đặt access token vào header của tất cả các yêu cầu AJAX
-        //   api.interceptors.request.use((config) => {
-        //     config.headers.Authorization = `Bearer ${accessToken}`;
-        //     return config;
-        //   });
-        // });
+
+        const storedTokens = JSON.parse(localStorage.getItem("tokens"));
+        const accessToken = storedTokens.accessToken;
+
+        api.interceptors.request.use((config) => {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+          return config;
+        });
       } else {
         console.log("User is signed out");
         api.interceptors.request.eject();
