@@ -8,7 +8,10 @@ import { signInWithPopup } from 'firebase/auth'
 import GoogleButton from 'react-google-button'
 import { api } from '../services/axios';
 
+// import { TokenContext } from '../App';
+
 const Signin = () => {
+    // const token = useContext(TokenContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [error, setError] = useState('');
     const navigate = useNavigate()
@@ -28,36 +31,29 @@ const Signin = () => {
         }
     })
 
-    const handleGoogleSignInClick = async () => {
+    const handleGoogleSignInClick = () => {
         signInWithPopup(auth, provider)
-            .then((data) => {
-                setValue(data.user.email)
-                localStorage.setItem("email", data.user.email)
-                //Lấy thông tin người dùng từ backend
-                api.post('/login')
+            .then((res) => {
+                setValue(res.user.email)
+                localStorage.setItem("email", res.user.email)
+                const data = {
+                    "idToken": res.user.accessToken
+                }
+                console.log("data", data)
+                api.post('/login', data)
                     .then((response) => {
-                        console.log(response.data);
-                        const { accessToken, refreshToken } = response.data;
-                        const tokens = {
-                            accessToken: accessToken,
-                            refreshToken: refreshToken,
-                        };
+                        console.log("API return:", response.data);
                         //Lưu token vào local storage
-                        localStorage.setItem('tokens', JSON.stringify(tokens));
-
-                        //Lấy accessToken
-                        //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
-                        // const accessToken = storedTokens.accessToken;
-                        // const refreshToken = storedTokens.refreshToken;
+                        localStorage.setItem('tokens', JSON.stringify(response.data));
+                        // api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;                        a
                     })
                     .catch((error) => {
                         console.log(error);
                     });
-                navigate('/account')
+
             }).catch(function (error) {
                 console.log(error)
             });
-        // signInWithRedirect(auth, provider)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,7 +159,7 @@ const Signin = () => {
                                     Login
                                 </button>
                                 <GoogleButton className='grow ml-4'
-                                    onClick={() => handleGoogleSignInClick()}
+                                    onClick={handleGoogleSignInClick}
                                 />
                             </div>
 

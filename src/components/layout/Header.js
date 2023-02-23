@@ -19,9 +19,17 @@ import { SearchOutlined } from "@ant-design/icons";
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../assets/images/team-2.jpg";
-import { Bell, Clockicon, Credit, Logsetting, Profile, Setting, Toggler, Wifi } from "../Icons";
+import {
+  Bell,
+  Clockicon,
+  Credit,
+  Logsetting,
+  Profile,
+  Setting,
+  Toggler,
+  Wifi,
+} from "../Icons";
 import { UserAuth } from "../../context/AuthContext";
-
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -47,20 +55,36 @@ const ButtonContainer = styled.div`
 const data = [
   {
     title: "New message from Sophie",
-    description: <><Clockicon/> 2 days ago</>,
+    description: (
+      <>
+        <Clockicon /> 2 days ago
+      </>
+    ),
 
     avatar: avtar,
   },
   {
     title: "New album by Travis Scott",
-    description: <><Clockicon/> 2 days ago</>,
+    description: (
+      <>
+        <Clockicon /> 2 days ago
+      </>
+    ),
 
-    avatar: <Avatar shape="square"><Wifi/></Avatar>,
+    avatar: (
+      <Avatar shape="square">
+        <Wifi />
+      </Avatar>
+    ),
   },
   {
     title: "Payment completed",
-    description: <>{<Clockicon/>} 2 days ago</>,
-    avatar: <Avatar shape="square"><Credit/></Avatar>,
+    description: <>{<Clockicon />} 2 days ago</>,
+    avatar: (
+      <Avatar shape="square">
+        <Credit />
+      </Avatar>
+    ),
   },
 ];
 
@@ -87,9 +111,7 @@ const items = [
   }, // remember to pass the key prop
 ];
 
-
-
-const Header =({
+const Header = ({
   // user,
   placement,
   name,
@@ -113,7 +135,7 @@ const Header =({
   return (
     <>
       <div className="setting-drwer" onClick={showDrawer}>
-        <Setting/>
+        <Setting />
       </div>
       <Row gutter={[24, 0]}>
         <Col span={24} md={6}>
@@ -142,19 +164,19 @@ const Header =({
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
               >
-                <Bell/>
+                <Bell />
               </a>
             </Dropdown>
           </Badge>
           <Button type="link" onClick={showDrawer}>
-            <Logsetting/>
+            <Logsetting />
           </Button>
           <Button
             type="link"
             className="sidebar-toggler"
             onClick={() => onPress()}
           >
-            <Toggler/>
+            <Toggler />
           </Button>
           {/* drawer chọn màu giao diện */}
           <Drawer
@@ -243,7 +265,7 @@ const Header =({
             </div>
           </Drawer>
           <Link to="/sign-in" className="btn-sign-in">
-            <Profile/>  
+            <Profile />
             <span>{user && user.displayName}</span>
           </Link>
           <Input
@@ -255,6 +277,6 @@ const Header =({
       </Row>
     </>
   );
-}
+};
 
 export default Header;
