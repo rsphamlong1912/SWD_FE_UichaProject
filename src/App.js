@@ -35,11 +35,14 @@ function App() {
       <TokenContext.Provider value={token}>
         <AuthContextProvider>
           <Routes>
+            <Route path="/" element={<SignIn />} />
             {publicRoutes.map((route, index) => {
               const Page = route.component;
+              // let DashboardLayout = Main;
+
               return <Route key={index} path={route.path} element={<Page />} />;
             })}
-            <Route path="/sign-in" element={<SignIn />} />
+            {/* <Route path="/sign-in" element={<SignIn />} /> */}
             {privateRoutes.map((route, index) => {
               const Page = route.component;
               let DashboardLayout = Main;
