@@ -1,10 +1,12 @@
 const routes = {
-  signin: "/sign-in",
-  home: "/",
-  dashboard: "/dashboard",
-  customers: "/customers",
-  billing: "/billing",
-  profile: "/profile",
+  home: '/',
+  signin: '/sign-in',
+
+  //dashboard: dashboard
+  dashboard: '/dashboard',
+  customers: '/customers',
+  billing: '/billing',
+  profile: '/profile',
 };
 
 export default routes;

@@ -1,37 +1,28 @@
-
-import React, { useEffect, createContext, useState } from "react";
-import { Route, Routes } from "react-router-dom";
-import Account from "./pages/Account";
-import Dashboard from "./pages/Dashboard";
-import Customers from "./pages/Customers";
-import Billing from "./pages/Billing";
-import Profile from "./pages/Profile";
-import SignIn from "./pages/SignIn";
-import Main from "./components/layout/Main";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import "antd/dist/antd.min.css";
-import "./assets/styles/main.css";
-import "./assets/styles/responsive.css";
-import { AuthContextProvider } from "./context/AuthContext";
-import { getToken } from "firebase/messaging";
-import { messaging } from "./firebase";
+import React, { useEffect, createContext, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import SignIn from '~/pages/SignIn';
+import ProtectedRoute from '~/routes/ProtectedRoute';
+import { AuthContextProvider } from '~/context/AuthContext';
+import { getToken } from 'firebase/messaging';
+import { messaging } from '~/firebase';
+import { privateRoutes, publicRoutes } from './routes';
+import Main from '~/components/Layout/DashboardLayout/Main.js';
 
 export const TokenContext = createContext(null);
+
 function App() {
   const [token, setToken] = useState(null);
 
   async function requestPermission() {
     const permission = await Notification.requestPermission();
-    if (permission === "granted") {
+    if (permission === 'granted') {
       const token = await getToken(messaging, {
-        vapidKey:
-          "BDYnLI-lWyP8cZUlOscmyqO4VGNVWVCMkio1T8ZZOoVW227bA-UoTYX4N_QpXzJOOjayK79OvJg_p00PnqyolZM",
+        vapidKey: 'BDYnLI-lWyP8cZUlOscmyqO4VGNVWVCMkio1T8ZZOoVW227bA-UoTYX4N_QpXzJOOjayK79OvJg_p00PnqyolZM',
       });
       setToken(token);
-      console.log("Token Gen", token);
-    } else if (permission === "denied") {
-      // alert("you denied for the notification");
-      console.log("you denied for the notification");
+      console.log('Token Gen', token);
+    } else if (permission === 'denied') {
+      console.log('you denied for the notification');
     }
   }
 
@@ -44,22 +35,29 @@ function App() {
       <TokenContext.Provider value={token}>
         <AuthContextProvider>
           <Routes>
+            {publicRoutes.map((route, index) => {
+              const Page = route.component;
+              return <Route key={index} path={route.path} element={<Page />} />;
+            })}
             <Route path="/sign-in" element={<SignIn />} />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/" element={<Main />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="customers" element={<Customers />} />
-              <Route path="billing" element={<Billing />} />
-              <Route from="*" to="/dashboard" />
-            </Route>
+            {privateRoutes.map((route, index) => {
+              const Page = route.component;
+              let DashboardLayout = Main;
+
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout>
+                        <Page />
+                      </DashboardLayout>
+                    </ProtectedRoute>
+                  }
+                />
+              );
+            })}
           </Routes>
         </AuthContextProvider>
       </TokenContext.Provider>

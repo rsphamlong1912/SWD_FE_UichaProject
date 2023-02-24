@@ -1,35 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import {
-  Row,
-  Col,
-  Breadcrumb,
-  Badge,
-  Dropdown,
-  Button,
-  List,
-  Avatar,
-  Input,
-  Drawer,
-  Typography,
-  Switch,
-} from "antd";
+import { Row, Col, Breadcrumb, Badge, Dropdown, Button, List, Avatar, Input, Drawer, Typography, Switch } from 'antd';
 
-import { SearchOutlined } from "@ant-design/icons";
-import { NavLink, Link } from "react-router-dom";
-import styled from "styled-components";
-import avtar from "../../assets/images/team-2.jpg";
-import {
-  Bell,
-  Clockicon,
-  Credit,
-  Logsetting,
-  Profile,
-  Setting,
-  Toggler,
-  Wifi,
-} from "../Icons";
-import { UserAuth } from "../../context/AuthContext";
+import { SearchOutlined } from '@ant-design/icons';
+import { NavLink, Link } from 'react-router-dom';
+import styled from 'styled-components';
+import avtar from '~/assets/images/team-2.jpg';
+import { Bell, Clockicon, Credit, Logsetting, Profile, Setting, Toggler, Wifi } from '~/components/Icons';
+import { UserAuth } from '~/context/AuthContext';
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -54,7 +32,7 @@ const ButtonContainer = styled.div`
 
 const data = [
   {
-    title: "New message from Sophie",
+    title: 'New message from Sophie',
     description: (
       <>
         <Clockicon /> 2 days ago
@@ -64,7 +42,7 @@ const data = [
     avatar: avtar,
   },
   {
-    title: "New album by Travis Scott",
+    title: 'New album by Travis Scott',
     description: (
       <>
         <Clockicon /> 2 days ago
@@ -78,7 +56,7 @@ const data = [
     ),
   },
   {
-    title: "Payment completed",
+    title: 'Payment completed',
     description: <>{<Clockicon />} 2 days ago</>,
     avatar: (
       <Avatar shape="square">
@@ -107,7 +85,7 @@ const items = [
         )}
       />
     ),
-    key: "item-1",
+    key: 'item-1',
   }, // remember to pass the key prop
 ];
 
@@ -125,7 +103,7 @@ const Header = ({
   const { Title, Text } = Typography;
 
   const [open, setOpen] = useState(false);
-  const [sidenavType, setSidenavType] = useState("transparent");
+  const [sidenavType, setSidenavType] = useState('transparent');
 
   useEffect(() => window.scrollTo(0, 0));
 
@@ -143,27 +121,18 @@ const Header = ({
             <Breadcrumb.Item>
               <NavLink to="/">Pages</NavLink>
             </Breadcrumb.Item>
-            <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
-              {name.replace("/", "")}
-            </Breadcrumb.Item>
+            <Breadcrumb.Item style={{ textTransform: 'capitalize' }}>{name.replace('/', '')}</Breadcrumb.Item>
           </Breadcrumb>
           <div className="ant-page-header-heading">
-            <span
-              className="ant-page-header-heading-title"
-              style={{ textTransform: "capitalize" }}
-            >
-              {subName.replace("/", "")}
+            <span className="ant-page-header-heading-title" style={{ textTransform: 'capitalize' }}>
+              {subName.replace('/', '')}
             </span>
           </div>
         </Col>
         <Col span={24} md={18} className="header-control">
           <Badge size="small" count={4}>
-            <Dropdown menu={{ items }} trigger={["click"]}>
-              <a
-                href="#pablo"
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
+            <Dropdown menu={{ items }} trigger={['click']}>
+              <a href="#pablo" className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 <Bell />
               </a>
             </Dropdown>
@@ -171,11 +140,7 @@ const Header = ({
           <Button type="link" onClick={showDrawer}>
             <Logsetting />
           </Button>
-          <Button
-            type="link"
-            className="sidebar-toggler"
-            onClick={() => onPress()}
-          >
+          <Button type="link" className="sidebar-toggler" onClick={() => onPress()}>
             <Toggler />
           </Button>
           {/* drawer chọn màu giao diện */}
@@ -199,35 +164,20 @@ const Header = ({
                 <Title level={5}>Sidebar Color</Title>
                 <div className="theme-color mb-2">
                   <ButtonContainer>
-                    <Button
-                      type="primary"
-                      onClick={() => handleSidenavColor("#1890ff")}
-                    >
+                    <Button type="primary" onClick={() => handleSidenavColor('#1890ff')}>
                       1
                     </Button>
-                    <Button
-                      type="success"
-                      onClick={() => handleSidenavColor("#52c41a")}
-                    >
+                    <Button type="success" onClick={() => handleSidenavColor('#52c41a')}>
                       1
                     </Button>
-                    <Button
-                      type="danger"
-                      onClick={() => handleSidenavColor("#d9363e")}
-                    >
+                    <Button type="danger" onClick={() => handleSidenavColor('#d9363e')}>
                       1
                     </Button>
-                    <Button
-                      type="yellow"
-                      onClick={() => handleSidenavColor("#fadb14")}
-                    >
+                    <Button type="yellow" onClick={() => handleSidenavColor('#fadb14')}>
                       1
                     </Button>
 
-                    <Button
-                      type="black"
-                      onClick={() => handleSidenavColor("#111")}
-                    >
+                    <Button type="black" onClick={() => handleSidenavColor('#111')}>
                       1
                     </Button>
                   </ButtonContainer>
@@ -238,19 +188,19 @@ const Header = ({
                   <Text>Choose between 2 different sidenav types.</Text>
                   <ButtonContainer className="trans">
                     <Button
-                      type={sidenavType === "transparent" ? "primary" : "white"}
+                      type={sidenavType === 'transparent' ? 'primary' : 'white'}
                       onClick={() => {
-                        handleSidenavType("transparent");
-                        setSidenavType("transparent");
+                        handleSidenavType('transparent');
+                        setSidenavType('transparent');
                       }}
                     >
                       TRANSPARENT
                     </Button>
                     <Button
-                      type={sidenavType === "white" ? "primary" : "white"}
+                      type={sidenavType === 'white' ? 'primary' : 'white'}
                       onClick={() => {
-                        handleSidenavType("#fff");
-                        setSidenavType("white");
+                        handleSidenavType('#fff');
+                        setSidenavType('white');
                       }}
                     >
                       WHITE
@@ -268,11 +218,7 @@ const Header = ({
             <Profile />
             <span>{user && user.displayName}</span>
           </Link>
-          <Input
-            className="header-search"
-            placeholder="Search..."
-            prefix={<SearchOutlined />}
-          />
+          <Input className="header-search" placeholder="Search..." prefix={<SearchOutlined />} />
         </Col>
       </Row>
     </>
