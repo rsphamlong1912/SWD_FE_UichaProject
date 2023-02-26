@@ -54,7 +54,7 @@ const Profile = () => {
   }
 
   const handleTest = () => {
-    api.get("/agency/test")
+    api.get("/agency")
       .then(res => {
         console.log(res)
         alert('Lấy dữ liệu thành công!');
