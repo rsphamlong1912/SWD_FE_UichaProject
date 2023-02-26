@@ -1,61 +1,18 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Button, Typography, Card } from 'antd';
+import '../assets/styles/signup.css';
 
 import logo3 from '../assets/images/Google__G__Logo.svg.png';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { DribbbleOutlined, TwitterOutlined, InstagramOutlined, GithubOutlined } from '@ant-design/icons';
 import { PinteredOutLined, Home } from '../components/Icons';
-import GoogleButton from 'react-google-button';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../firebase';
-import { api } from '~/services/axios';
+import { Radio } from 'antd';
 
-const Signin = () => {
+const SignUp = () => {
   const { Title } = Typography;
   const { Header, Footer, Content } = Layout;
 
-  const [value, setValue] = useState('');
-  const navigate = useNavigate();
-
-  const handleGoogleSignInClick = async () => {
-    signInWithPopup(auth, provider)
-      .then((res) => {
-        setValue(res.user.email);
-        localStorage.setItem('email', res.user.email);
-        const data = {
-          idToken: res.user.accessToken,
-        };
-        api
-          .post('/login', data)
-          .then((response) => {
-            console.log('API return:', response.data);
-            const { accessToken, refreshToken, role } = response.data;
-            const tokens = {
-              accessToken: accessToken,
-              refreshToken: refreshToken,
-            };
-            //Lưu token vào local storage
-            localStorage.setItem('tokens', JSON.stringify(tokens));
-            if (role === 'unknown') {
-              window.location.href = '/sign-up';
-            } else {
-              window.location.href = '/profile';
-            }
-
-            //Lấy accessToken
-            //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
-            // const accessToken = storedTokens.accessToken;
-            // const refreshToken = storedTokens.refreshToken;
-          })
-          .catch((error) => {
-            alert('Sập server rồi!!!');
-          });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
   const navitems = [
     {
       label: (
@@ -67,6 +24,13 @@ const Signin = () => {
       key: '1',
     },
   ];
+
+  const [role, setRole] = useState('customer');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(role);
+  };
 
   const menu = [
     { label: 'Company', key: '1' },
@@ -99,18 +63,57 @@ const Signin = () => {
         <Content className="p-0">
           <div className="sign-up-header">
             <div className="content">
-              <Title>Sign In</Title>
+              <h1>Lần đầu bạn đến với hệ thống?</h1>
             </div>
+            <form>
+              <h2>Chọn vai trò của bạn?</h2>
+              <div className="wrapper">
+                <input
+                  type="radio"
+                  name="role"
+                  id="option-1"
+                  value="admin"
+                  onChange={(e) => setRole(e.target.value)}
+                  checked={role === 'admin'}
+                />
+                <input
+                  type="radio"
+                  name="role"
+                  id="option-2"
+                  value="creater"
+                  onChange={(e) => setRole(e.target.value)}
+                  checked={role === 'creater'}
+                />
+                <input
+                  type="radio"
+                  name="role"
+                  id="option-3"
+                  value="customer"
+                  onChange={(e) => setRole(e.target.value)}
+                  checked={role === 'customer'}
+                />
+                <label htmlFor="option-1" className="option option-1">
+                  <div className="dot"></div>
+                  <span>Administrator</span>
+                </label>
+                <label htmlFor="option-2" className="option option-2">
+                  <div className="dot"></div>
+                  <span>Content creators</span>
+                </label>
+                <label htmlFor="option-3" className="option option-3">
+                  <div className="dot"></div>
+                  <span>Customer</span>
+                </label>
+              </div>
+              <br />
+              <button onClick={handleSubmit} className="btn-submit-role">
+                Xác nhận
+              </button>
+            </form>
           </div>
 
           <Card className="card-signup header-solid h-full ant-card pt-0" bordered="false">
-            <div className="sign-up-gateways">
-              {/* <Button type="false">
-                <img src={logo3} alt="logo 3" />
-                <span>Sign in with Google</span>
-              </Button> */}
-              <GoogleButton type="light" className="grow ml-4" onClick={handleGoogleSignInClick} />
-            </div>
+            <div className="sign-up-gateways"></div>
           </Card>
         </Content>
         <Footer>
@@ -126,4 +129,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignUp;
