@@ -72,9 +72,9 @@ const SignUp = () => {
                   type="radio"
                   name="role"
                   id="option-1"
-                  value="admin"
+                  value="agency"
                   onChange={(e) => setRole(e.target.value)}
-                  checked={role === 'admin'}
+                  checked={role === 'agency'}
                 />
                 <input
                   type="radio"
@@ -94,7 +94,7 @@ const SignUp = () => {
                 />
                 <label htmlFor="option-1" className="option option-1">
                   <div className="dot"></div>
-                  <span>Administrator</span>
+                  <span>Agency</span>
                 </label>
                 <label htmlFor="option-2" className="option option-2">
                   <div className="dot"></div>
