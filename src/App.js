@@ -8,7 +8,7 @@ import { messaging } from '~/firebase';
 import { privateRoutes, publicRoutes } from './routes';
 import Main from '~/components/Layout/DashboardLayout/Main.js';
 import HomePageCustomer from './pages/HomePageCustomer';
-import Cart from './pages/customer/common/Cart/Cart';
+import CartCustomer from './pages/CartCustomer';
 
 export const TokenContext = createContext(null);
 
@@ -64,6 +64,7 @@ function App() {
               );
             })}
             <Route path="/customer" element={<HomePageCustomer />} />
+            <Route path="/cart" element={<CartCustomer />} />
           </Routes>
         </AuthContextProvider>
       </TokenContext.Provider>

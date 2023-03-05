@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import '../assets/styles/homepage-customer.css';
+import React, { useState } from 'react';
 import Header from './customer/common/header/Header';
 import Pages from './customer/pages/Pages';
 import Data from './customer/components/Data';
 import Footer from './customer/common/footer/Footer';
 import Sdata from './customer/components/shops/Sdata';
 import { api } from '~/services/axios';
+import Cart from './customer/common/Cart/Cart';
 
-function HomePageCustomer() {
+function CartCustomer() {
   /*
   step1 :  const { productItems } = Data 
   lai pass garne using props
@@ -16,6 +16,7 @@ function HomePageCustomer() {
   ==> CartItem lai pass garre using props from  <Cart CartItem={CartItem} /> ani import garrxa in cartItem ma
  
   Step 3 :  chai flashCard ma xa button ma
+
   Step 4 :  addToCart lai chai pass garne using props in pages and cart components
   */
 
@@ -25,7 +26,6 @@ function HomePageCustomer() {
 
   //Step 2 :
   const [CartItem, setCartItem] = useState([]);
-  const [productList, setProductList] = useState([]);
 
   //Step 4 :
   const addToCart = (product) => {
@@ -70,25 +70,13 @@ function HomePageCustomer() {
     }
   };
 
-  useEffect(() => {
-    api
-      .get('/product')
-      .then((response) => {
-        console.log('API return product list:', response.data.data);
-        setProductList(response.data.data);
-      })
-      .catch((error) => {
-        alert('Lấy dữ liệu thất bại');
-      });
-  }, []);
-
   return (
     <>
       <Header CartItem={CartItem} />
-      <Pages productItems={productItems} addToCart={addToCart} productList={productList} />
+      <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
       <Footer />
     </>
   );
 }
 
-export default HomePageCustomer;
+export default CartCustomer;
