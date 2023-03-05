@@ -1,12 +1,28 @@
 // import { useState } from "react";
 import { Menu } from 'antd';
 import { NavLink, useLocation } from 'react-router-dom';
+import { UserAuth } from '~/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import logo from '~/assets/images/logo.png';
 import { Billing, Customer, Dashboard, Profile, Signout } from '~/components/Icons';
 
-const Sidenav = ({ color, handleLogout }) => {
+const Sidenav = ({ color }) => {
+  const { user, logout } = UserAuth();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const page = pathname.replace('/', '');
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      localStorage.removeItem('tokens');
+      localStorage.removeItem('email');
+      console.log('You are logged out');
+      navigate('/');
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
   const items = [
     {

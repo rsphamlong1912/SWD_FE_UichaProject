@@ -7,7 +7,7 @@ import Discount from "../components/discount/Discount"
 import Shop from "../components/shops/Shop"
 import Annocument from "../components/annocument/Annocument"
 
-const Pages = ({ productItems, addToCart, CartItem, shopItems }) => {
+const Pages = ({ productItems, addToCart, CartItem, shopItems, productList }) => {
   return (
     <>
       <Home CartItem={CartItem} />
@@ -15,7 +15,7 @@ const Pages = ({ productItems, addToCart, CartItem, shopItems }) => {
       <TopCate />
       <NewArrivals />
       <Discount />
-      <Shop shopItems={shopItems} addToCart={addToCart} />
+      <Shop productList={productList} addToCart={addToCart} />
       <Annocument />
     </>
   )

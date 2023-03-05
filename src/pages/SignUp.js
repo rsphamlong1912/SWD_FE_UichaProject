@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Button, Typography, Card } from 'antd';
 import '../assets/styles/signup.css';
 
@@ -8,10 +8,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { DribbbleOutlined, TwitterOutlined, InstagramOutlined, GithubOutlined } from '@ant-design/icons';
 import { PinteredOutLined, Home } from '../components/Icons';
 import { Radio } from 'antd';
+import { api } from '~/services/axios';
+import { UserAuth } from '~/context/AuthContext';
 
 const SignUp = () => {
   const { Title } = Typography;
   const { Header, Footer, Content } = Layout;
+  const { user } = UserAuth();
 
   const navitems = [
     {
@@ -30,6 +33,25 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(role);
+    const data = {
+      role: role,
+      idagency: '1',
+      address: '',
+      data: {
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName,
+        phone: user.phoneNumber,
+      },
+    };
+    api
+      .post('/signup', data)
+      .then((response) => {
+        console.log('Đăng ký thành công');
+      })
+      .catch((error) => {
+        alert('Đăng ký thất bại');
+      });
   };
 
   const menu = [
@@ -48,6 +70,17 @@ const SignUp = () => {
     { label: <Link to="#">{<PinteredOutLined />}</Link>, key: '4' },
     { label: <Link to="#">{<GithubOutlined />}</Link>, key: '5' },
   ];
+  // useEffect(() => {
+  //   api
+  //     .get('/agency')
+  //     .then((response) => {
+  //       console.log('Dánh sách Agency nè:', response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
   return (
     <>
       <div className="layout-default ant-layout layout-sign-up">
@@ -66,6 +99,7 @@ const SignUp = () => {
               <h1>Lần đầu bạn đến với hệ thống?</h1>
             </div>
             <form>
+              <div></div>
               <h2>Chọn vai trò của bạn?</h2>
               <div className="wrapper">
                 <input
@@ -80,9 +114,9 @@ const SignUp = () => {
                   type="radio"
                   name="role"
                   id="option-2"
-                  value="creater"
+                  value="creator"
                   onChange={(e) => setRole(e.target.value)}
-                  checked={role === 'creater'}
+                  checked={role === 'creator'}
                 />
                 <input
                   type="radio"
@@ -106,6 +140,18 @@ const SignUp = () => {
                 </label>
               </div>
               <br />
+              <div>
+                {role === 'creator' && (
+                  <>
+                    <h3>Chooese your agency</h3>
+                    <select>
+                      <option value="option1-1">Agency 1</option>
+                      <option value="option1-2">Agency 2</option>
+                      <option value="option1-3">Agency 3</option>
+                    </select>
+                  </>
+                )}
+              </div>
               <button onClick={handleSubmit} className="btn-submit-role">
                 Xác nhận
               </button>
