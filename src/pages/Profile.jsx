@@ -68,6 +68,8 @@ const Profile = () => {
   const [imageURL, setImageURL] = useState(false);
   const [, setLoading] = useState(false);
 
+  let role = localStorage.getItem('role');
+
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
@@ -178,7 +180,7 @@ const Profile = () => {
 
                 <div className="avatar-info">
                   <h4 className="font-semibold m-0">{user && user.displayName}</h4>
-                  <p>Admin</p>
+                  <p>{role.charAt(0).toUpperCase() + role.slice(1)}</p>
                 </div>
               </Avatar.Group>
             </Col>

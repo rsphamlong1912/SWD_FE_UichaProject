@@ -60,7 +60,7 @@ const ShopCart = ({ shopItems, addToCart, productList }) => {
             <div className='product mtop'>
               <div className='img'>
                 {/* <span className='discount'>{shopItems.discount}% Off</span> */}
-                <img src="https://graphicshell.com/wp-content/uploads/2022/07/Black-T-shirt-Featured-Image.jpg" alt='' />
+                <img src={product.image} alt='' width='80' height='120' />
                 <div className='product-like'>
                   <label>{count}</label> <br />
                   <i className='fa-regular fa-heart' onClick={increment}></i>
