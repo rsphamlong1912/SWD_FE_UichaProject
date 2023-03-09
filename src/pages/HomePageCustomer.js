@@ -127,6 +127,7 @@ function HomePageCustomer() {
       .then((response) => {
         console.log('After check:', response);
         if (response.data.data.length > 0) {
+          localStorage.setItem('idorder', response.data.data[0].idorder);
           return;
         } else {
           const dataCreateCart = {
