@@ -58,14 +58,14 @@ const ShopCart = ({ shopItems, addToCart, productList }) => {
         return (
           <div className='box'>
             <div className='product mtop'>
-              {/* <div className='img'>
-                <span className='discount'>{shopItems.discount}% Off</span>
-                <img src={shopItems.cover} alt='' />
+              <div className='img'>
+                {/* <span className='discount'>{shopItems.discount}% Off</span> */}
+                <img src="https://graphicshell.com/wp-content/uploads/2022/07/Black-T-shirt-Featured-Image.jpg" alt='' />
                 <div className='product-like'>
                   <label>{count}</label> <br />
                   <i className='fa-regular fa-heart' onClick={increment}></i>
                 </div>
-              </div> */}
+              </div>
               <div className='product-details'>
                 <h3>{product.name}</h3>
                 <div className='rate'>
@@ -80,7 +80,7 @@ const ShopCart = ({ shopItems, addToCart, productList }) => {
                   {/* step : 3  
                      if hami le button ma click garryo bahne 
                     */}
-                  <button onClick={() => addToCart(shopItems)}>
+                  <button onClick={() => addToCart(product)}>
                     <i className='fa fa-plus'></i>
                   </button>
                 </div>

@@ -23,6 +23,7 @@ const Signin = () => {
       .then((res) => {
         setValue(res.user.email);
         localStorage.setItem('email', res.user.email);
+        localStorage.setItem('uid', res.user.uid);
         const data = {
           idToken: res.user.accessToken,
         };
@@ -37,8 +38,11 @@ const Signin = () => {
             };
             //Lưu token vào local storage
             localStorage.setItem('tokens', JSON.stringify(tokens));
+
             if (role === 'unknown') {
               window.location.href = '/sign-up';
+            } else if (role === 'customer') {
+              window.location.href = '/customer';
             } else {
               window.location.href = '/profile';
             }
