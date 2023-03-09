@@ -29,6 +29,7 @@ const SignUp = () => {
   ];
 
   const [role, setRole] = useState('customer');
+  const [agencyList, setAgencyList] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,16 +71,17 @@ const SignUp = () => {
     { label: <Link to="#">{<PinteredOutLined />}</Link>, key: '4' },
     { label: <Link to="#">{<GithubOutlined />}</Link>, key: '5' },
   ];
-  // useEffect(() => {
-  //   api
-  //     .get('/agency')
-  //     .then((response) => {
-  //       console.log('Dánh sách Agency nè:', response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    api
+      .get('/agency')
+      .then((response) => {
+        console.log('Dánh sách Agency nè:', response.data);
+        setAgencyList(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <>
@@ -145,9 +147,9 @@ const SignUp = () => {
                   <>
                     <h3>Chooese your agency</h3>
                     <select>
-                      <option value="option1-1">Agency 1</option>
-                      <option value="option1-2">Agency 2</option>
-                      <option value="option1-3">Agency 3</option>
+                      {agencyList.map((agency) => (
+                        <option value={agency.idagency}>{agency.name}</option>
+                      ))}
                     </select>
                   </>
                 )}

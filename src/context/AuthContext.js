@@ -1,12 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { auth } from "../firebase";
-import { api } from "../services/axios";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
+import { api } from '../services/axios';
 
 const UserContext = createContext();
 
@@ -30,9 +25,9 @@ export const AuthContextProvider = ({ children }) => {
       if (currentUser) {
         console.log(currentUser);
         setUser(currentUser);
-        console.log("User is signed in:", currentUser.uid);
+        console.log('User is signed in:', currentUser.uid);
 
-        const storedTokens = JSON.parse(localStorage.getItem("tokens"));
+        const storedTokens = JSON.parse(localStorage.getItem('tokens'));
         const accessToken = storedTokens?.accessToken || null;
 
         api.interceptors.request.use((config) => {
@@ -40,17 +35,13 @@ export const AuthContextProvider = ({ children }) => {
           return config;
         });
       } else {
-        console.log("User is signed out");
+        console.log('User is signed out');
         setUser(null);
       }
     });
   });
 
-  return (
-    <UserContext.Provider value={{ createUser, user, logout, signIn }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ createUser, user, logout, signIn }}>{children}</UserContext.Provider>;
 };
 
 export const UserAuth = () => {

@@ -8,7 +8,7 @@ import { messaging } from '~/firebase';
 import { privateRoutes, publicRoutes } from './routes';
 import Main from '~/components/Layout/DashboardLayout/Main.js';
 import HomePageCustomer from './pages/HomePageCustomer';
-import CartCustomer from './pages/CartCustomer';
+import { api } from './services/axios';
 
 export const TokenContext = createContext(null);
 
@@ -31,6 +31,15 @@ function App() {
   useEffect(() => {
     requestPermission();
   }, []);
+
+  // useEffect(() => {
+  //   const storedTokens = JSON.parse(localStorage.getItem('tokens'));
+  //   const accessToken = storedTokens?.accessToken || null;
+  //   api.interceptors.request.use((config) => {
+  //     config.headers.Authorization = `Bearer ${accessToken}`;
+  //     return config;
+  //   });
+  // });
 
   return (
     <>
@@ -63,8 +72,7 @@ function App() {
                 />
               );
             })}
-            <Route path="/customer" element={<HomePageCustomer />} />
-            <Route path="/cart" element={<CartCustomer />} />
+            <Route path="/customer/*" element={<HomePageCustomer />} />
           </Routes>
         </AuthContextProvider>
       </TokenContext.Provider>
