@@ -4,7 +4,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { UserAuth } from '~/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import logo from '~/assets/images/logo.png';
-import { Billing, Customer, Dashboard, Profile, Signout } from '~/components/Icons';
+import { Billing, Categories, Customer, Dashboard, Profile, Signout } from '~/components/Icons';
 
 const Sidenav = ({ color }) => {
   const { user, logout } = UserAuth();
@@ -57,6 +57,19 @@ const Sidenav = ({ color }) => {
       ),
       key: '2',
     },
+
+    {
+      label: (
+        <NavLink to="/categories">
+          <span className="icon">
+            <Categories />
+          </span>
+          <span className="label">Categories</span>
+        </NavLink>
+      ),
+      key: '7',
+    },
+
     {
       label: (
         <NavLink to="/billing">
@@ -111,18 +124,6 @@ const Sidenav = ({ color }) => {
       </div>
       <hr />
       <Menu items={items} theme="light" mode="inline" />
-      {/* <div className="aside-footer">
-        <div
-          className="footer-box"
-          style={{
-            background: color,
-          }}
-        >
-          <Button onClick={handleLogout} type="primary" className="ant-btn-sm ant-btn-block">
-            SIGN OUT
-          </Button>
-        </div>
-      </div> */}
     </>
   );
 };

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Button, Typography, Card } from 'antd';
 
-import logo3 from '../assets/images/Google__G__Logo.svg.png';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { DribbbleOutlined, TwitterOutlined, InstagramOutlined, GithubOutlined } from '@ant-design/icons';
 import { PinteredOutLined, Home } from '../components/Icons';
