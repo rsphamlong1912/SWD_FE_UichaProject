@@ -17,6 +17,9 @@ const Sidenav = ({ color }) => {
       await logout();
       localStorage.removeItem('tokens');
       localStorage.removeItem('email');
+      localStorage.removeItem('cart');
+      localStorage.removeItem('role');
+      localStorage.removeItem('idorder');
       console.log('You are logged out');
       navigate('/');
     } catch (e) {
