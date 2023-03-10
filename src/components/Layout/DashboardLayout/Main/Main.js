@@ -17,6 +17,11 @@ const Main = ({ children }) => {
   const handleLogout = async () => {
     try {
       await logout();
+      localStorage.removeItem('tokens');
+      localStorage.removeItem('email');
+      localStorage.removeItem('cart');
+      localStorage.removeItem('role');
+      localStorage.removeItem('idorder');
       navigate('/sign-in');
       console.log('You are logged out');
     } catch (e) {

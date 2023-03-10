@@ -1,6 +1,6 @@
 import React from "react"
 import "./style.css"
-import { api } from "~/services/axios"
+import { api } from "../../../../../src/services/axios"
 
 const Cart = ({ CartItem, addToCart, decreaseQty }) => {
   // Stpe: 7   calucate total of items
@@ -9,32 +9,23 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
   // hàm xử lý sự kiện khi người dùng nhấn nút thanh toán
   const handleCheckout = () => {
 
-    const genCart = CartItem.map(item => {
-      return {
-        name: item.name,
-        sku: item.idproduct,
-        price: item.price,
-        currency: 'USD',
-        quantity: item.qty
-      }
-    })
-    console.log('test', genCart)
-
     const orderData = {
-      items_cart: genCart,
       total: totalPrice,
       idorder: localStorage.getItem('idorder')
     };
 
-    api.post('/pay', orderData)
-      .then(response => {
-        console.log("Ket qua tra ve payment:", response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+    console.log(orderData);
 
+    api
+      .post('/checkout', orderData)
+      .then((response) => {
+        console.log('After payment', response);
+      })
+      .catch((error) => {
+        console.log('Loi payment: ', error);
+      });
+
+  }
   // prodcut qty total
   return (
     <>

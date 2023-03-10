@@ -9,6 +9,7 @@ import Sdata from './customer/components/shops/Sdata';
 import { api } from '~/services/axios';
 import Cart from './customer/common/Cart/Cart';
 import { UserAuth } from '../context/AuthContext';
+import ProtectedRoute from '~/routes/ProtectedRoute';
 
 function HomePageCustomer() {
   /*
@@ -152,7 +153,6 @@ function HomePageCustomer() {
 
   useEffect(() => {
     // sendCartToServer(CartItem);
-    console.log('Cart item ne: ', CartItem);
     if (CartItem.length > 0) {
       const orderListDetails = pickOrderDetails(CartItem, '123');
       pushOrderDetailsToServer(orderListDetails);
@@ -172,7 +172,14 @@ function HomePageCustomer() {
           path="/"
           element={<Pages productItems={productItems} addToCart={addToCart} productList={productList} />}
         />
-        <Route path="/cart" element={<Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />} />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       <Footer />
