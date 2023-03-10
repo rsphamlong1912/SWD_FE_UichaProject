@@ -6,7 +6,7 @@ import { AuthContextProvider } from '~/context/AuthContext';
 import { getToken } from 'firebase/messaging';
 import { messaging } from '~/firebase';
 import { privateRoutes, publicRoutes } from './routes';
-import Main from '~/components/Layout/DashboardLayout/Main.js';
+import Main from '~/components/Layout/DashboardLayout/Main/Main.js';
 import HomePageCustomer from './pages/HomePageCustomer';
 import { api } from './services/axios';
 

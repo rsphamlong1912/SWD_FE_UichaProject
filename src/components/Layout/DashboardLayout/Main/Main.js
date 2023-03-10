@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Layout, Affix } from 'antd';
-import Header from './Header';
-import Footer from './Footer';
+import Header from '../Header';
+import Footer from '../Footer/Footer';
 import { Outlet } from 'react-router-dom/dist';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '~/context/AuthContext';
-import Sidenav from './Sidenav';
+import Sidenav from '../Sidenav';
 
 const { Header: AntHeader, Content, Sider } = Layout;
 

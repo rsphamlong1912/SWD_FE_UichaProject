@@ -36,6 +36,7 @@ export const AuthContextProvider = ({ children }) => {
         });
       } else {
         console.log('User is signed out');
+        localStorage.removeItem('uid');
         setUser(null);
       }
     });

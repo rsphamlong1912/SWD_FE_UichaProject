@@ -1,7 +1,8 @@
 import config from '~/config';
-import Billing from '~/pages/Billing';
-import Customers from '~/pages/Customers';
-import Dashboard from '~/pages/Dashboard';
+import Billing from '~/pages/Billing/Billing';
+import Categories from '~/pages/Categories/Categories';
+import Customers from '~/pages/Customers/Customers';
+import Dashboard from '~/pages/Dashboard/Dashboard';
 import Profile from '~/pages/Profile';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/SignUp';
@@ -19,6 +20,7 @@ const privateRoutes = [
   { path: config.routes.customers, component: Customers },
   { path: config.routes.billing, component: Billing },
   { path: config.routes.profile, component: Profile },
+  { path: config.routes.categories, component: Categories },
 ];
 
 export { publicRoutes, privateRoutes };

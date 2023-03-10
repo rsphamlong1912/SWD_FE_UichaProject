@@ -3,20 +3,20 @@ import { Card, Col, Row, Typography, Tooltip, Progress, Upload, message, Button,
 import { MenuUnfoldOutlined, RightOutlined, FileOutlined, ToTopOutlined } from '@ant-design/icons';
 import Paragraph from 'antd/lib/typography/Paragraph';
 
-import Echart from '../components/chart/EChart';
-import LineChart from '../components/chart/LineChart';
+import Echart from '~/components/chart/EChart';
+import LineChart from '~/components/chart/LineChart';
 
-import ava1 from '../assets/images/logo-shopify.svg';
-import ava2 from '../assets/images/logo-atlassian.svg';
-import ava3 from '../assets/images/logo-slack.svg';
-import ava4 from '../assets/images/logo-spotify.svg';
-import ava5 from '../assets/images/logo-jira.svg';
-import ava6 from '../assets/images/logo-invision.svg';
-import team1 from '../assets/images/team-1.jpg';
-import team2 from '../assets/images/team-2.jpg';
-import team3 from '../assets/images/team-3.jpg';
-import team4 from '../assets/images/team-4.jpg';
-import card from '../assets/images/info-card-1.jpg';
+import ava1 from '~/assets/images/logo-shopify.svg';
+import ava2 from '~/assets/images/logo-atlassian.svg';
+import ava3 from '~/assets/images/logo-slack.svg';
+import ava4 from '~/assets/images/logo-spotify.svg';
+import ava5 from '~/assets/images/logo-jira.svg';
+import ava6 from '~/assets/images/logo-invision.svg';
+import team1 from '~/assets/images/team-1.jpg';
+import team2 from '~/assets/images/team-2.jpg';
+import team3 from '~/assets/images/team-3.jpg';
+import team4 from '~/assets/images/team-4.jpg';
+import card from '~/assets/images/info-card-1.jpg';
 import axios from 'axios';
 
 const Dashboard = () => {
@@ -258,30 +258,6 @@ const Dashboard = () => {
     },
   ];
 
-  const handleFileUpload = ({ file }) => {
-    const getFileObject = (progress, estimated) => {
-      return {
-        name: file.name,
-        uid: file.uid,
-        progress: progress,
-        estimated: estimated || 0,
-      };
-    };
-
-    axios.post('https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/image', file, {
-      onUploadProgress: (event) => {
-        console.log(file);
-        console.log(event);
-        setFiles((pre) => {
-          return {
-            ...pre,
-            [file.uid]: getFileObject(event.progress, event.estimated),
-          };
-        });
-      },
-    });
-  };
-
   const getTimeString = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor(timeInSeconds / 60 - hours * 60);
@@ -408,44 +384,6 @@ const Dashboard = () => {
                     <span className="click">Click to Upload</span>
                   </Button>
                 </Upload>
-                <Space direction="vertical" style={{ width: '100%' }}>
-                  <Upload.Dragger
-                    multiple
-                    customRequest={handleFileUpload}
-                    showUploadList={false}
-                    style={{ width: '100%' }}
-                    name="jpg, png, jpeg"
-                  >
-                    Dragger files here OR <Button>Click to Upload</Button>
-                  </Upload.Dragger>
-                  {Object.values(files).map((file, index) => {
-                    return (
-                      <Space
-                        direction="vertical"
-                        key={index}
-                        style={{
-                          backgroundColor: 'rgba(0,0,0,0.05)',
-                          width: 500,
-                          padding: 8,
-                        }}
-                      >
-                        <Space>
-                          <FileOutlined />
-                          <Typography>{file.name}</Typography>
-                          {file.estimated ? (
-                            <Typography.Text type="secondary">
-                              {' '}
-                              is being uploaded in {getTimeString(file.estimated)} seconds
-                            </Typography.Text>
-                          ) : (
-                            <Typography.Text type="secondary">is Uploaded Succesfully</Typography.Text>
-                          )}
-                        </Space>
-                        <Progress percent={Math.ceil(file.progress * 100)} />
-                      </Space>
-                    );
-                  })}
-                </Space>
               </div>
             </Card>
           </Col>
