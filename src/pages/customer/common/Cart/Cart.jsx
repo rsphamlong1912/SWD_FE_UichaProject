@@ -43,7 +43,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
               return (
                 <div className='cart-list product d_flex' key={item.id}>
                   <div className='img'>
-                    <img src="https://graphicshell.com/wp-content/uploads/2022/07/Black-T-shirt-Featured-Image.jpg" alt='' />
+                    <img src={item.image} alt='' />
                   </div>
                   <div className='cart-details'>
                     <h3>{item.name}</h3>
