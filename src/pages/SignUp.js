@@ -29,6 +29,7 @@ const SignUp = () => {
   ];
 
   const [role, setRole] = useState('customer');
+  const [idagency, setIdAgency] = useState('1');
   const [agencyList, setAgencyList] = useState([]);
 
   const handleSubmit = (e) => {
@@ -36,7 +37,7 @@ const SignUp = () => {
     console.log(role);
     const data = {
       role: role,
-      idagency: '1',
+      idagency: idagency,
       address: '',
       data: {
         uid: user.uid,
@@ -48,7 +49,12 @@ const SignUp = () => {
     api
       .post('/signup', data)
       .then((response) => {
-        console.log('Đăng ký thành công');
+        alert('Đăng ký thành công');
+        if (role === 'customer') {
+          window.location.href = '/customer';
+        } else {
+          window.location.href = '/profile';
+        }
       })
       .catch((error) => {
         alert('Đăng ký thất bại');
@@ -146,9 +152,11 @@ const SignUp = () => {
                 {role === 'creator' && (
                   <>
                     <h3>Chooese your agency</h3>
-                    <select>
+                    <select onChange={(event) => setIdAgency(event.target.value)}>
                       {agencyList.map((agency) => (
-                        <option value={agency.idagency}>{agency.name}</option>
+                        <option key={agency.idagency} value={agency.idagency}>
+                          {agency.name}
+                        </option>
                       ))}
                     </select>
                   </>

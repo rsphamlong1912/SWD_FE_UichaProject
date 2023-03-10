@@ -108,7 +108,9 @@ function HomePageCustomer() {
 
   useEffect(() => {
     api
-      .get('/product')
+      .get('/product?idcollection=1', {
+        idcollection: 1,
+      })
       .then((response) => {
         console.log('API return product list:', response.data.data);
         setProductList(response.data.data);
@@ -119,15 +121,29 @@ function HomePageCustomer() {
   }, []);
 
   useEffect(() => {
-    const dataCreateCart = {
-      idcustomer: localStorage.getItem('uid'),
-      idagency: 1,
-    };
+    const idcustomer = localStorage.getItem('uid');
     api
-      .post('/order/add', dataCreateCart)
+      .get(`/order/customer/${idcustomer}`)
       .then((response) => {
-        console.log('After add cart', response);
-        localStorage.setItem('idorder', response.data.data.idorder);
+        console.log('After check:', response);
+        if (response.data.data.length > 0) {
+          localStorage.setItem('idorder', response.data.data[0].idorder);
+          return;
+        } else {
+          const dataCreateCart = {
+            idcustomer: localStorage.getItem('uid'),
+            idagency: 1,
+          };
+          api
+            .post('/order/add', dataCreateCart)
+            .then((response) => {
+              console.log('After add cart', response);
+              localStorage.setItem('idorder', response.data.data.idorder);
+            })
+            .catch((error) => {
+              console.log('Loi tao cart roi: ', error);
+            });
+        }
       })
       .catch((error) => {
         console.log('Loi tao cart roi: ', error);
