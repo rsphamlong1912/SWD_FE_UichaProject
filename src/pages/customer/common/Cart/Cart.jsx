@@ -6,21 +6,18 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
   // Stpe: 7   calucate total of items
   const totalPrice = CartItem.reduce((price, item) => price + item.qty * item.price, 0)
 
-  // hàm để gửi thông tin giỏ hàng và thanh toán lên API
-  const sendOrderToAPI = (orderData) => {
-    return api.post('/pay', orderData);
-  }
-
   // hàm xử lý sự kiện khi người dùng nhấn nút thanh toán
   const handleCheckout = () => {
+    console.log('test')
     const orderData = {
       items_cart: CartItem,
-      total: totalPrice
+      total: totalPrice,
+      idorder: localStorage.getItem('idorder')
     };
 
-    sendOrderToAPI(orderData)
+    api.post('/pay', orderData)
       .then(response => {
-        console.log(response)
+        console.log("Ket qua tra ve payment:", response);
       })
       .catch(error => {
         console.log(error);
