@@ -8,9 +8,20 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
 
   // hàm xử lý sự kiện khi người dùng nhấn nút thanh toán
   const handleCheckout = () => {
-    console.log('test')
+
+    const genCart = CartItem.map(item => {
+      return {
+        name: item.name,
+        sku: item.idproduct,
+        price: item.price,
+        currency: 'USD',
+        quantity: item.qty
+      }
+    })
+    console.log('test', genCart)
+
     const orderData = {
-      items_cart: CartItem,
+      items_cart: genCart,
       total: totalPrice,
       idorder: localStorage.getItem('idorder')
     };
