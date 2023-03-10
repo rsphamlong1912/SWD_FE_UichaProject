@@ -13,7 +13,7 @@ const Shop = ({ addToCart, shopItems, productList }) => {
           <div className='contentWidth'>
             <div className='heading d_flex'>
               <div className='heading-left row  f_flex'>
-                <h2>Mobile Phones</h2>
+                <h2>Our Products</h2>
               </div>
               <div className='heading-right row '>
                 <span>View all</span>
