@@ -71,40 +71,6 @@ function HomePageCustomer() {
     }
   };
 
-  // const addToCart = (product) => {
-  //   const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
-
-  //   if (productExit) {
-  //     setCartItem(
-  //       CartItem.map((item) =>
-  //         item.idproduct === product.idproduct ? { ...productExit, qty: productExit.qty + 1 } : item,
-  //       ),
-  //     );
-  //   } else {
-  //     setCartItem([...CartItem, { ...product, qty: 1 }]);
-  //     api
-  //       .post('orderdetail/add', {
-  //         idproduct: product.idproduct,
-  //         idorder: localStorage.getItem('idorder'),
-  //         quantity: 1,
-  //       })
-  //       .then((response) => {
-  //         console.log('OrderDetail created successfully');
-  //         console.log('New OrderDetail:', response.data);
-  //         const newOrderDetail = {
-  //           idorderdetail: response.data.idorderdetail,
-  //           idproduct: response.data.idproduct,
-  //           quantity: response.data.quantity,
-  //         };
-  //         setOrderDetails([...orderDetails, newOrderDetail]);
-  //       })
-  //       .catch((error) => {
-  //         console.error(`Error sending order detail`);
-  //         console.error(error);
-  //       });
-  //   }
-  // };
-
   const addToCart = (product) => {
     const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
 
@@ -170,23 +136,9 @@ function HomePageCustomer() {
     }
   };
 
-  // const decreaseQty = (product) => {
-  //   const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
-
-  //   if (productExit.qty === 1) {
-  //     setCartItem(CartItem.filter((item) => item.idproduct !== product.idproduct));
-  //   } else {
-  //     setCartItem(
-  //       CartItem.map((item) =>
-  //         item.idproduct === product.idproduct ? { ...productExit, qty: productExit.qty - 1 } : item,
-  //       ),
-  //     );
-  //   }
-  // };
-
   useEffect(() => {
     api
-      .get('/product?idcollection=1', {
+      .get('/product?idcollection=6', {
         idcollection: 1,
       })
       .then((response) => {
