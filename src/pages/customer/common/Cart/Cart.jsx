@@ -20,6 +20,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
       .post('/checkout', orderData)
       .then((response) => {
         console.log('After payment', response);
+        alert('Đặt hàng thành công!');
       })
       .catch((error) => {
         console.log('Loi payment: ', error);
