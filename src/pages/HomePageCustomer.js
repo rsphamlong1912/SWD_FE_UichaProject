@@ -18,6 +18,92 @@ function HomePageCustomer() {
 
   const [CartItem, setCartItem] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [orderDetails, setOrderDetails] = useState([]);
+
+  const updateOrderDetail = (product) => {
+    const orderDetail = orderDetails.find((item) => item.idproduct === product.idproduct);
+
+    if (orderDetail) {
+      api
+        .put('/orderdetail/update/', {
+          quantity: product.qty,
+          idorderdetail: orderDetail.idorderdetail,
+        })
+        .then((response) => {
+          console.log('OrderDetail updated successfully');
+          console.log('Updated OrderDetail:', response);
+          const updatedOrderDetail = {
+            idorderdetail: orderDetail.idorderdetail,
+            idproduct: orderDetail.idproduct,
+            quantity: product.qty,
+          };
+          setOrderDetails(
+            orderDetails.map((item) =>
+              item.idorderdetail === updatedOrderDetail.idorderdetail ? updatedOrderDetail : item,
+            ),
+          );
+        })
+        .catch((error) => {
+          console.error(`Error updating order detail`);
+          console.error(error);
+        });
+    } else {
+      api
+        .post('orderdetail/add', {
+          idproduct: product.idproduct,
+          idorder: localStorage.getItem('idorder'),
+          quantity: product.qty,
+        })
+        .then((response) => {
+          console.log('OrderDetail created successfully');
+          console.log('New OrderDetail:', response.data);
+          const newOrderDetail = {
+            idorderdetail: response.data.data.idorderdetail,
+            idproduct: response.data.data.idproduct,
+            quantity: response.data.data.quantity,
+          };
+          setOrderDetails([...orderDetails, newOrderDetail]);
+        })
+        .catch((error) => {
+          console.error(`Error sending order detail`);
+          console.error(error);
+        });
+    }
+  };
+
+  // const addToCart = (product) => {
+  //   const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
+
+  //   if (productExit) {
+  //     setCartItem(
+  //       CartItem.map((item) =>
+  //         item.idproduct === product.idproduct ? { ...productExit, qty: productExit.qty + 1 } : item,
+  //       ),
+  //     );
+  //   } else {
+  //     setCartItem([...CartItem, { ...product, qty: 1 }]);
+  //     api
+  //       .post('orderdetail/add', {
+  //         idproduct: product.idproduct,
+  //         idorder: localStorage.getItem('idorder'),
+  //         quantity: 1,
+  //       })
+  //       .then((response) => {
+  //         console.log('OrderDetail created successfully');
+  //         console.log('New OrderDetail:', response.data);
+  //         const newOrderDetail = {
+  //           idorderdetail: response.data.idorderdetail,
+  //           idproduct: response.data.idproduct,
+  //           quantity: response.data.quantity,
+  //         };
+  //         setOrderDetails([...orderDetails, newOrderDetail]);
+  //       })
+  //       .catch((error) => {
+  //         console.error(`Error sending order detail`);
+  //         console.error(error);
+  //       });
+  //   }
+  // };
 
   const addToCart = (product) => {
     const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
@@ -30,36 +116,73 @@ function HomePageCustomer() {
       );
     } else {
       setCartItem([...CartItem, { ...product, qty: 1 }]);
+    }
+
+    updateOrderDetail({ ...product, qty: productExit ? productExit.qty + 1 : 1 });
+  };
+
+  const decreaseQty = (product) => {
+    const orderDetail = orderDetails.find((item) => item.idproduct === product.idproduct);
+    const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
+
+    if (productExit.qty === 1) {
+      setCartItem(CartItem.filter((item) => item.idproduct !== product.idproduct));
       api
-        .post('orderdetail/add', {
-          idproduct: product.idproduct,
-          idorder: localStorage.getItem('idorder'),
-          quantity: 1,
-        })
+        .delete(`orderdetail/delete/${orderDetail.idorderdetail}`)
         .then((response) => {
-          console.log(`Order detail sent successfully`);
-          console.log(response.data);
+          console.log('OrderDetail deleted successfully');
+          console.log('Deleted OrderDetail:', response.data);
+          setOrderDetails(orderDetails.filter((item) => item.idproduct !== product.idproduct));
         })
         .catch((error) => {
-          console.error(`Error sending order detail`);
+          console.error(`Error deleting order detail`);
+          console.error(error);
+        });
+    } else {
+      const newQty = productExit.qty - 1;
+      setCartItem(
+        CartItem.map((item) => (item.idproduct === product.idproduct ? { ...productExit, qty: newQty } : item)),
+      );
+
+      api
+        .put('/orderdetail/update/', {
+          quantity: product.qty,
+          idorderdetail: orderDetail.idorderdetail,
+        })
+        .then((response) => {
+          console.log('OrderDetail updated successfully');
+          console.log('Updated OrderDetail:', response);
+          const updatedOrderDetail = {
+            idorderdetail: orderDetail.idorderdetail,
+            idproduct: orderDetail.idproduct,
+            quantity: newQty,
+          };
+          setOrderDetails(
+            orderDetails.map((item) =>
+              item.idorderdetail === updatedOrderDetail.idorderdetail ? updatedOrderDetail : item,
+            ),
+          );
+        })
+        .catch((error) => {
+          console.error(`Error updating order detail`);
           console.error(error);
         });
     }
   };
 
-  const decreaseQty = (product) => {
-    const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
+  // const decreaseQty = (product) => {
+  //   const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
 
-    if (productExit.qty === 1) {
-      setCartItem(CartItem.filter((item) => item.idproduct !== product.idproduct));
-    } else {
-      setCartItem(
-        CartItem.map((item) =>
-          item.idproduct === product.idproduct ? { ...productExit, qty: productExit.qty - 1 } : item,
-        ),
-      );
-    }
-  };
+  //   if (productExit.qty === 1) {
+  //     setCartItem(CartItem.filter((item) => item.idproduct !== product.idproduct));
+  //   } else {
+  //     setCartItem(
+  //       CartItem.map((item) =>
+  //         item.idproduct === product.idproduct ? { ...productExit, qty: productExit.qty - 1 } : item,
+  //       ),
+  //     );
+  //   }
+  // };
 
   useEffect(() => {
     api
@@ -104,6 +227,8 @@ function HomePageCustomer() {
         console.log('Loi tao cart roi: ', error);
       });
   }, []);
+
+  console.log(orderDetails);
 
   return (
     <>
