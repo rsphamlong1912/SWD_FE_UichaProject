@@ -162,7 +162,7 @@ function HomePageCustomer() {
         } else {
           const dataCreateCart = {
             idcustomer: localStorage.getItem('uid'),
-            idagency: 1,
+            idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33',
           };
           api
             .post('/order/add', dataCreateCart)
