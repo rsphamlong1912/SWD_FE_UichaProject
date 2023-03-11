@@ -26,6 +26,33 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
       });
 
   }
+
+  const handleCheckoutPaypal = () => {
+    const genCart = CartItem.map(item => {
+      return {
+        name: item.name,
+        sku: item.idproduct,
+        price: item.price,
+        currency: 'USD',
+        quantity: item.qty
+      }
+    })
+    console.log('test genCart', genCart)
+
+    const orderData = {
+      items_cart: genCart,
+      total: totalPrice,
+      idorder: localStorage.getItem('idorder')
+    };
+
+    api.post('/pay', orderData)
+      .then(response => {
+        console.log("Ket qua tra ve paypal:", response);
+      })
+      .catch((error) => {
+        console.log('Loi payment: ', error);
+      })
+  }
   // prodcut qty total
   return (
     <>
@@ -83,7 +110,8 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
               <h4>Total Price :</h4>
               <h3>${totalPrice}.00</h3>
             </div>
-            <button onClick={handleCheckout}>Thanh toán</button>
+            <button onClick={handleCheckout}>Thanh toán Cash</button>
+            <button onClick={handleCheckoutPaypal}>Thanh toán Paypal</button>
           </div>
 
         </div>
