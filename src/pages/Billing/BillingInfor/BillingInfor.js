@@ -98,6 +98,9 @@ export const BillingInfor = (props) => {
                     <Descriptions.Item label="ID Customer" span={3}>
                       {data.idcustomer}
                     </Descriptions.Item>
+                    <Descriptions.Item label="Creator" span={3}>
+                      Trịnh Ngọc Bảo
+                    </Descriptions.Item>
                     <Descriptions.Item label="Total Price" span={3}>
                       $ {data.totalmoney}
                     </Descriptions.Item>
