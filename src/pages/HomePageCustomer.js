@@ -10,6 +10,8 @@ import { api } from '~/services/axios';
 import Cart from './customer/common/Cart/Cart';
 import { UserAuth } from '../context/AuthContext';
 import ProtectedRoute from '~/routes/ProtectedRoute';
+import MenuCreator from './MenuCreator';
+import MenuCollection from './MenuCollection';
 
 function HomePageCustomer() {
   const { productItems } = Data;
@@ -17,7 +19,6 @@ function HomePageCustomer() {
   const { user } = UserAuth();
 
   const [CartItem, setCartItem] = useState([]);
-  const [productList, setProductList] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
 
   const updateOrderDetail = (product) => {
@@ -91,7 +92,7 @@ function HomePageCustomer() {
     const orderDetail = orderDetails.find((item) => item.idproduct === product.idproduct);
     const productExit = CartItem.find((item) => item.idproduct === product.idproduct);
 
-    if (productExit.qty === 1) {
+    if (orderDetail.quantity === 1) {
       setCartItem(CartItem.filter((item) => item.idproduct !== product.idproduct));
       api
         .delete(`orderdetail/delete/${orderDetail.idorderdetail}`)
@@ -105,14 +106,14 @@ function HomePageCustomer() {
           console.error(error);
         });
     } else {
-      const newQty = productExit.qty - 1;
+      const newQty = orderDetail.quantity - 1;
       setCartItem(
         CartItem.map((item) => (item.idproduct === product.idproduct ? { ...productExit, qty: newQty } : item)),
       );
 
       api
         .put('/orderdetail/update/', {
-          quantity: product.qty,
+          quantity: newQty,
           idorderdetail: orderDetail.idorderdetail,
         })
         .then((response) => {
@@ -136,43 +137,108 @@ function HomePageCustomer() {
     }
   };
 
-  useEffect(() => {
+  const fetchCart = (idorder) => {
     api
-      .get('/product?idcollection=6', {
-        idcollection: 1,
-      })
+      .get(`/orderdetail/${idorder}`)
       .then((response) => {
-        console.log('API return product list:', response.data.data);
-        setProductList(response.data.data);
+        console.log('cart ne', response.data.data);
+        const cartItemsFromApi = response.data.data;
+        const updatedCartItems = [];
+        for (const cartItem of cartItemsFromApi) {
+          api
+            .get(`/product/${cartItem.idproduct}`)
+            .then((response) => {
+              const product = response.data.data;
+              updatedCartItems.push({
+                idcollection: product.idcollection,
+                idproduct: product.idproduct,
+                idproductcategory: product.idproductcategory,
+                image: product.image,
+                name: product.name,
+                price: product.price,
+                qty: cartItem.quantity,
+                quantity: product.quantity,
+                status: product.status,
+                idcreator: cartItem.idcreator,
+                creatorname: cartItem.creatorname,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+        setCartItem(updatedCartItems);
       })
       .catch((error) => {
-        alert('Lấy dữ liệu thất bại');
+        console.log(error);
       });
-  }, []);
+  };
+
+  // const fetchCart = (idorder) => {
+  //   api
+  //     .get(`/orderdetail/${idorder}`)
+  //     .then((response) => {
+  //       const cartItemsFromApi = response.data.data;
+  //       const promises = cartItemsFromApi.map((cartItem) => {
+  //         return api.get(`/product/${cartItem.idproduct}`).then((response) => {
+  //           const product = response.data.data;
+  //           return {
+  //             idcollection: product.idcollection,
+  //             idproduct: product.idproduct,
+  //             idproductcategory: product.idproductcategory,
+  //             image: product.image,
+  //             name: product.name,
+  //             price: product.price,
+  //             qty: cartItem.quantity,
+  //             quantity: product.quantity,
+  //             status: product.status,
+  //           };
+  //         });
+  //       });
+  //       Promise.all(promises).then((updatedCartItems) => {
+  //         setCartItem(updatedCartItems);
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  function createNewCart() {
+    const dataCreateCart = {
+      idcustomer: localStorage.getItem('uid'),
+      idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33',
+    };
+    api
+      .post('/order/add', dataCreateCart)
+      .then((response) => {
+        console.log('After add cart', response);
+        localStorage.setItem('idorder', response.data.data.idorder);
+        fetchOrderDetails();
+      })
+      .catch((error) => {
+        console.log('Loi tao cart roi: ', error);
+      });
+  }
 
   useEffect(() => {
     const idcustomer = localStorage.getItem('uid');
     api
       .get(`/order/customer/${idcustomer}`)
       .then((response) => {
-        console.log('After check:', response);
+        console.log('After check cart:', response);
         if (response.data.data.length > 0) {
-          localStorage.setItem('idorder', response.data.data[0].idorder);
+          const ordersWithStatusTrue = response.data.data.filter((order) => order.status === true);
+          if (ordersWithStatusTrue.length > 0) {
+            localStorage.setItem('idorder', ordersWithStatusTrue[0].idorder);
+            fetchCart(localStorage.getItem('idorder'));
+            fetchOrderDetails();
+          } else {
+            createNewCart();
+          }
           return;
         } else {
-          const dataCreateCart = {
-            idcustomer: localStorage.getItem('uid'),
-            idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33',
-          };
-          api
-            .post('/order/add', dataCreateCart)
-            .then((response) => {
-              console.log('After add cart', response);
-              localStorage.setItem('idorder', response.data.data.idorder);
-            })
-            .catch((error) => {
-              console.log('Loi tao cart roi: ', error);
-            });
+          createNewCart();
         }
       })
       .catch((error) => {
@@ -180,7 +246,48 @@ function HomePageCustomer() {
       });
   }, []);
 
-  console.log(orderDetails);
+  // useEffect(() => {
+  //   const updatedOrderDetail = [];
+  //   api
+  //     .get(`/orderdetail/${localStorage.getItem('idorder')}`)
+  //     .then((response) => {
+  //       const cartItemsFromApi = response.data.data;
+  //       for (const cartItem of cartItemsFromApi) {
+  //         updatedOrderDetail.push({
+  //           idorderdetail: cartItem.idorderdetail,
+  //           idproduct: cartItem.idproduct,
+  //           quantity: cartItem.quantity,
+  //         });
+  //       }
+  //       setOrderDetails(updatedOrderDetail);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  const fetchOrderDetails = () => {
+    const updatedOrderDetail = [];
+    api
+      .get(`/orderdetail/${localStorage.getItem('idorder')}`)
+      .then((response) => {
+        const cartItemsFromApi = response.data.data;
+        for (const cartItem of cartItemsFromApi) {
+          updatedOrderDetail.push({
+            idorderdetail: cartItem.idorderdetail,
+            idproduct: cartItem.idproduct,
+            quantity: cartItem.quantity,
+          });
+        }
+        setOrderDetails(updatedOrderDetail);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  console.log('orderDetail:', orderDetails);
+  console.log('CartItem:', CartItem);
 
   return (
     <>
@@ -191,15 +298,17 @@ function HomePageCustomer() {
         </Route>
       </Routes> */}
       <Routes>
+        <Route path="/:idcollection" element={<Pages productItems={productItems} addToCart={addToCart} />} />
+        <Route path="/menu-creator" element={<MenuCreator productItems={productItems} addToCart={addToCart} />} />
         <Route
-          path="/"
-          element={<Pages productItems={productItems} addToCart={addToCart} productList={productList} />}
+          path="/menu-collection/:idtheme"
+          element={<MenuCollection productItems={productItems} addToCart={addToCart} />}
         />
         <Route
           path="/cart"
           element={
             <ProtectedRoute>
-              <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+              <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} setCartItem={setCartItem} />
             </ProtectedRoute>
           }
         />

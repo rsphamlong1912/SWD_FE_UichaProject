@@ -9,6 +9,8 @@ import { privateRoutes, publicRoutes } from './routes';
 import Main from '~/components/Layout/DashboardLayout/Main/Main.js';
 import HomePageCustomer from './pages/HomePageCustomer';
 import { api } from './services/axios';
+import HomeCreator from './pages/HomeCreator';
+import CreatorRoute from './routes/CreatorRoute';
 
 export const TokenContext = createContext(null);
 
@@ -73,6 +75,14 @@ function App() {
               );
             })}
             <Route path="/customer/*" element={<HomePageCustomer />} />
+            <Route
+              path="/creator"
+              element={
+                <CreatorRoute>
+                  <HomeCreator />
+                </CreatorRoute>
+              }
+            />
           </Routes>
         </AuthContextProvider>
       </TokenContext.Provider>
