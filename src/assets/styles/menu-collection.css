@@ -1,0 +1,61 @@
+.rs-team {
+  text-align: center; /* căn giữa theo chiều ngang */
+}
+.rs-team .team-item {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.rs-team .team-item:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  /* background-color: rgba(0, 0, 0, 0.566); */
+  z-index: 1;
+}
+
+.rs-team .team-item .team-img {
+  position: relative;
+  width: auto;
+  height: 420px;
+}
+.rs-team .team-item .team-img img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.rs-team .team-item .team-img .normal-text {
+  position: absolute;
+  text-align: center;
+  height: 80px;
+  bottom: -1px;
+  padding: 17px 0;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  background-color: rgba(72, 112, 49, 0.7);
+  transition: 0.3s ease all;
+  z-index: 10;
+}
+.rs-team .team-item .team-img .normal-text .team-name {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  display: block;
+  text-transform: uppercase;
+  padding: 0 0 3px;
+}
+.rs-team .team-item .team-img img {
+  width: 100%;
+}
+
+.rs-team .collection-item {
+  display: inline-block;
+  width: 45%;
+  vertical-align: top;
+  margin: 20px 10px;
+}

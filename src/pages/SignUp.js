@@ -29,7 +29,7 @@ const SignUp = () => {
   ];
 
   const [role, setRole] = useState('customer');
-  const [idagency, setIdAgency] = useState('1');
+  const [idagency, setIdAgency] = useState('H1iFm7FawHY0pv9C4IGIBOUgdi33');
   const [agencyList, setAgencyList] = useState([]);
 
   const handleSubmit = (e) => {
@@ -44,6 +44,7 @@ const SignUp = () => {
         email: user.email,
         name: user.displayName,
         phone: user.phoneNumber,
+        picture: user.photoURL,
       },
     };
     api
@@ -53,7 +54,7 @@ const SignUp = () => {
         if (role === 'customer') {
           window.location.href = '/customer';
         } else {
-          window.location.href = '/profile';
+          window.location.href = '/creator';
         }
       })
       .catch((error) => {
@@ -110,14 +111,14 @@ const SignUp = () => {
               <div></div>
               <h2>Chọn vai trò của bạn?</h2>
               <div className="wrapper">
-                <input
+                {/* <input
                   type="radio"
                   name="role"
                   id="option-1"
                   value="agency"
                   onChange={(e) => setRole(e.target.value)}
                   checked={role === 'agency'}
-                />
+                /> */}
                 <input
                   type="radio"
                   name="role"
@@ -134,21 +135,21 @@ const SignUp = () => {
                   onChange={(e) => setRole(e.target.value)}
                   checked={role === 'customer'}
                 />
-                <label htmlFor="option-1" className="option option-1">
+                {/* <label htmlFor="option-1" className="option option-1">
                   <div className="dot"></div>
                   <span>Agency</span>
-                </label>
+                </label> */}
                 <label htmlFor="option-2" className="option option-2">
                   <div className="dot"></div>
-                  <span>Content creators</span>
+                  <span>Nhà sáng tạo</span>
                 </label>
                 <label htmlFor="option-3" className="option option-3">
                   <div className="dot"></div>
-                  <span>Customer</span>
+                  <span>Khách hàng</span>
                 </label>
               </div>
               <br />
-              <div>
+              {/* <div>
                 {role === 'creator' && (
                   <>
                     <h3>Chooese your agency</h3>
@@ -161,7 +162,7 @@ const SignUp = () => {
                     </select>
                   </>
                 )}
-              </div>
+              </div> */}
               <button onClick={handleSubmit} className="btn-submit-role">
                 Xác nhận
               </button>
