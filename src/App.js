@@ -11,6 +11,7 @@ import HomePageCustomer from './pages/HomePageCustomer';
 import { api } from './services/axios';
 import HomeCreator from './pages/HomeCreator';
 import CreatorRoute from './routes/CreatorRoute';
+import PendingCreator from './pages/PendingCreator';
 
 export const TokenContext = createContext(null);
 
@@ -78,9 +79,17 @@ function App() {
             <Route
               path="/creator"
               element={
-                <CreatorRoute>
-                  <HomeCreator />
-                </CreatorRoute>
+                // <CreatorRoute>
+                <HomeCreator />
+                // </CreatorRoute>
+              }
+            />
+            <Route
+              path="/pending-creator"
+              element={
+                // <CreatorRoute>
+                <PendingCreator />
+                // </CreatorRoute>
               }
             />
           </Routes>
