@@ -37,11 +37,22 @@ const Signin = () => {
             //Lưu token vào local storage
             localStorage.setItem('tokens', JSON.stringify(tokens));
             localStorage.setItem('role', accountdb);
+            if (accountdb.status) {
+              localStorage.setItem('role', 'creator');
+            } else {
+              localStorage.setItem('role', accountdb);
+            }
 
             if (accountdb === 'unknown') {
               window.location.href = '/sign-up';
             } else if (accountdb === 'customer') {
               window.location.href = '/customer/menu-creator';
+            } else if (accountdb.role === 'creator') {
+              if (accountdb.status == 1) {
+                window.location.href = '/creator';
+              } else {
+                window.location.href = '/pending-creator';
+              }
             } else {
               window.location.href = '/profile';
             }

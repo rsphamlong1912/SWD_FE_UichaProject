@@ -57,57 +57,6 @@ const Cart = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
       })
   }
 
-  const creatorItems = [...new Set(CartItem.map(item => item.idcreator))]
-    .map(creatorId => {
-      const creatorItems = CartItem.filter(item => item.idcreator === creatorId);
-      return (
-        <div key={creatorId}>
-          <a href="http://localhost:3001/customer/menu-creator">
-            <h2 className="creator-detail">Creator: {creatorItems[0].creatorname}</h2>
-          </a>
-          <ul>
-            {creatorItems.map(item => {
-              const productQty = item.price * item.qty
-              return (
-                <div className='cart-list product d_flex' key={item.id}>
-                  <div className='img'>
-                    <img src={item.image} alt='' />
-                  </div>
-                  <div className='cart-details'>
-                    <h3>{item.name}</h3>
-                    <h4>
-                      ${item.price} * {item.qty}
-                      <span>${productQty}.00</span>
-                    </h4>
-                  </div>
-                  <div className='cart-items-function'>
-                    <div className='removeCart'>
-                      <button className='removeCart'>
-                        <i className='fa-solid fa-xmark'></i>
-                      </button>
-                    </div>
-                    {/* stpe: 5 
-                product ko qty lai inc ra des garne
-                */}
-                    <div className='cartControl d_flex'>
-                      <button className='incCart' onClick={() => addToCart(item)}>
-                        <i className='fa-solid fa-plus'></i>
-                      </button>
-                      <button className='desCart' onClick={() => decreaseQty(item)}>
-                        <i className='fa-solid fa-minus'></i>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className='cart-item-price'></div>
-                </div>
-              )
-            }
-            )}
-          </ul>
-        </div>
-      );
-    });
 
   return (
     <>
@@ -118,7 +67,57 @@ const Cart = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
           <div className='cart-details'>
             {CartItem.length === 0 && <h1 className='no-items product'>No Items are add in Cart</h1>}
 
-            {creatorItems}
+            {[...new Set(CartItem.map(item => item.idcreator))]
+              .map(creatorId => {
+                const creatorItems = CartItem.filter(item => item.idcreator === creatorId);
+                return (
+                  <div key={creatorId}>
+                    <a href="http://localhost:3001/customer/menu-creator">
+                      <h2 className="creator-detail">Creator: {creatorItems[0].creatorname}</h2>
+                    </a>
+                    <ul>
+                      {creatorItems.map(item => {
+                        const productQty = item.price * item.qty
+                        return (
+                          <div className='cart-list product d_flex' key={item.id}>
+                            <div className='img'>
+                              <img src={item.image} alt='' />
+                            </div>
+                            <div className='cart-details'>
+                              <h3>{item.name}</h3>
+                              <h4>
+                                ${item.price} * {item.qty}
+                                <span>${productQty}.00</span>
+                              </h4>
+                            </div>
+                            <div className='cart-items-function'>
+                              <div className='removeCart'>
+                                <button className='removeCart'>
+                                  <i className='fa-solid fa-xmark'></i>
+                                </button>
+                              </div>
+                              {/* stpe: 5 
+                product ko qty lai inc ra des garne
+                */}
+                              <div className='cartControl d_flex'>
+                                <button className='incCart' onClick={() => addToCart(item)}>
+                                  <i className='fa-solid fa-plus'></i>
+                                </button>
+                                <button className='desCart' onClick={() => decreaseQty(item)}>
+                                  <i className='fa-solid fa-minus'></i>
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className='cart-item-price'></div>
+                          </div>
+                        )
+                      }
+                      )}
+                    </ul>
+                  </div>
+                );
+              })}
           </div>
 
 
