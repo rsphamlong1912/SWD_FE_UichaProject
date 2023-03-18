@@ -1,6 +1,7 @@
 const routes = {
   home: '/',
   signin: '/sign-in',
+  signup: '/sign-up',
 
   //dashboard: dashboard
   dashboard: '/dashboard',

@@ -29,19 +29,30 @@ const Signin = () => {
           .post('/login', data)
           .then((response) => {
             console.log('API return:', response.data);
-            const { accessToken, refreshToken, role } = response.data;
+            const { accessToken, refreshToken, accountdb } = response.data;
             const tokens = {
               accessToken: accessToken,
               refreshToken: refreshToken,
             };
             //Lưu token vào local storage
             localStorage.setItem('tokens', JSON.stringify(tokens));
-            localStorage.setItem('role', role);
+            localStorage.setItem('role', accountdb);
+            if (accountdb.status) {
+              localStorage.setItem('role', 'creator');
+            } else {
+              localStorage.setItem('role', accountdb);
+            }
 
-            if (role === 'unknown') {
+            if (accountdb === 'unknown') {
               window.location.href = '/sign-up';
-            } else if (role === 'customer') {
-              window.location.href = '/customer';
+            } else if (accountdb === 'customer') {
+              window.location.href = '/customer/menu-creator';
+            } else if (accountdb.role === 'creator') {
+              if (accountdb.status == 1) {
+                window.location.href = '/creator';
+              } else {
+                window.location.href = '/pending-creator';
+              }
             } else {
               window.location.href = '/profile';
             }

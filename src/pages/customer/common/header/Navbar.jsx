@@ -22,13 +22,10 @@ const Navbar = () => {
                 <Link to='/'>home</Link>
               </li>
               <li>
-                <Link to='/pages'>pages</Link>
+                <Link to='/customer/menu-creator'>Back to Shopping</Link>
               </li>
               <li>
-                <Link to='/user'>user account</Link>
-              </li>
-              <li>
-                <Link to='/vendor'>vendor account</Link>
+                <Link to='/profile'>user account</Link>
               </li>
               <li>
                 <Link to='/track'>track my order</Link>

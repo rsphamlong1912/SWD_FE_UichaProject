@@ -4,27 +4,27 @@ const Catg = () => {
   const data = [
     {
       cateImg: "./images/category/cat-1.png",
-      cateName: "Apple",
+      cateName: "BoBui",
     },
     {
       cateImg: "./images/category/cat-2.png",
-      cateName: "Samasung",
+      cateName: "SWE",
     },
     {
       cateImg: "./images/category/cat-1.png",
-      cateName: "Oppo",
+      cateName: "Artist Club",
     },
     {
       cateImg: "./images/category/cat-2.png",
-      cateName: "Vivo",
+      cateName: "HFWTH",
     },
     {
       cateImg: "./images/category/cat-1.png",
-      cateName: "Redimi",
+      cateName: "Levent",
     },
     {
       cateImg: "./images/category/cat-2.png",
-      cateName: "Sony",
+      cateName: "Missout",
     },
   ]
   return (
