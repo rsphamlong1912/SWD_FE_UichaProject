@@ -43,7 +43,7 @@ const Sidenav = ({ color }) => {
     },
     {
       label: (
-        <NavLink to="/customers">
+        <NavLink to="/creators">
           <span
             className="icon"
             style={{
@@ -52,7 +52,7 @@ const Sidenav = ({ color }) => {
           >
             <Customer />
           </span>
-          <span className="label">Customers</span>
+          <span className="label">Creators</span>
         </NavLink>
       ),
       key: '2',

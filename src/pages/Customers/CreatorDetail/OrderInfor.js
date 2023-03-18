@@ -14,7 +14,7 @@ const convertToLocalDate = (inputDate) => {
   return date.toLocaleString();
 };
 
-export const BillingInfor = (props) => {
+export const OrderInfor = (props) => {
   const [information, setInformation] = useState([
     {
       title: 'Oliver Liam',

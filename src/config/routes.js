@@ -4,10 +4,11 @@ const routes = {
 
   //dashboard: dashboard
   dashboard: '/dashboard',
-  customers: '/customers',
+  creators: '/creators',
   billing: '/billing',
   profile: '/profile',
   categories: '/categories',
+  creatorDetail: 'creators/:idcreator',
 };
 
 export default routes;
