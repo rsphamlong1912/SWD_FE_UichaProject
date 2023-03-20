@@ -52,7 +52,7 @@ const SignUp = () => {
       .then((response) => {
         alert('Đăng ký thành công');
         if (role === 'customer') {
-          window.location.href = '/menu-creator';
+          window.location.href = '/customer/menu-creator';
         } else {
           window.location.href = '/creator';
         }

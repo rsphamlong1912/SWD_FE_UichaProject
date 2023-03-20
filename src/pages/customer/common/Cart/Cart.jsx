@@ -1,10 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import "./style.css"
 import { api } from "../../../../../src/services/axios"
 import { useEffect } from "react"
 
 const Cart = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
-  // Stpe: 7   calucate total of items
   const totalPrice = CartItem.reduce((price, item) => price + item.qty * item.price, 0)
 
   // hàm xử lý sự kiện khi người dùng nhấn nút thanh toán
@@ -51,14 +50,17 @@ const Cart = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
 
     api.post('/pay', orderData)
       .then(response => {
-        console.log("Ket qua tra ve paypal:", response);
+        console.log('After payment', response);
+        setCartItem([]);
+        window.location.href = response.data.message;
       })
       .catch((error) => {
         console.log('Loi payment: ', error);
       })
   }
 
-  const item = [...new Set(CartItem.map(item => item.idcreator))]
+
+  let item = [...new Set(CartItem.map(item => item.idcreator))]
     .map(creatorId => {
       const creatorItems = CartItem.filter(item => item.idcreator === creatorId);
       return (
@@ -112,6 +114,9 @@ const Cart = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
 
 
 
+
+
+
   return (
     <>
       <section className='cart-items'>
@@ -121,57 +126,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
           <div className='cart-details'>
             {CartItem.length === 0 && <h1 className='no-items product'>No Items are add in Cart</h1>}
 
-            {[...new Set(CartItem.map(item => item.idcreator))]
-              .map(creatorId => {
-                const creatorItems = CartItem.filter(item => item.idcreator === creatorId);
-                return (
-                  <div key={creatorId}>
-                    <a href="http://localhost:3001/customer/menu-creator">
-                      <h2 className="creator-detail">Creator: {creatorItems[0].creatorname}</h2>
-                    </a>
-                    <ul>
-                      {creatorItems.map(item => {
-                        const productQty = item.price * item.qty
-                        return (
-                          <div className='cart-list product d_flex' key={item.id}>
-                            <div className='img'>
-                              <img src={item.image} alt='' />
-                            </div>
-                            <div className='cart-details'>
-                              <h3>{item.name}</h3>
-                              <h4>
-                                ${item.price} * {item.qty}
-                                <span>${productQty}.00</span>
-                              </h4>
-                            </div>
-                            <div className='cart-items-function'>
-                              <div className='removeCart'>
-                                <button className='removeCart'>
-                                  <i className='fa-solid fa-xmark'></i>
-                                </button>
-                              </div>
-                              {/* stpe: 5 
-                product ko qty lai inc ra des garne
-                */}
-                              <div className='cartControl d_flex'>
-                                <button className='incCart' onClick={() => addToCart(item)}>
-                                  <i className='fa-solid fa-plus'></i>
-                                </button>
-                                <button className='desCart' onClick={() => decreaseQty(item)}>
-                                  <i className='fa-solid fa-minus'></i>
-                                </button>
-                              </div>
-                            </div>
-
-                            <div className='cart-item-price'></div>
-                          </div>
-                        )
-                      }
-                      )}
-                    </ul>
-                  </div>
-                );
-              })}
+            {item}
           </div>
 
 
@@ -183,7 +138,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
               <h3>${totalPrice}.00</h3>
             </div>
             <button onClick={handleCheckout} className="btn-checkout">Đặt hàng</button>
-            {/* <button onClick={handleCheckoutPaypal}>Thanh toán Paypal</button> */}
+            <button onClick={handleCheckoutPaypal} className="btn-checkout">Thanh toán Paypal</button>
           </div>
 
         </div>
