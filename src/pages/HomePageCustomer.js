@@ -12,6 +12,7 @@ import { UserAuth } from '../context/AuthContext';
 import ProtectedRoute from '~/routes/ProtectedRoute';
 import MenuCreator from './MenuCreator';
 import MenuCollection from './MenuCollection';
+import CreatorProfile from './CreatorProfile';
 
 function HomePageCustomer() {
   const { productItems } = Data;
@@ -174,36 +175,6 @@ function HomePageCustomer() {
       });
   };
 
-  // const fetchCart = (idorder) => {
-  //   api
-  //     .get(`/orderdetail/${idorder}`)
-  //     .then((response) => {
-  //       const cartItemsFromApi = response.data.data;
-  //       const promises = cartItemsFromApi.map((cartItem) => {
-  //         return api.get(`/product/${cartItem.idproduct}`).then((response) => {
-  //           const product = response.data.data;
-  //           return {
-  //             idcollection: product.idcollection,
-  //             idproduct: product.idproduct,
-  //             idproductcategory: product.idproductcategory,
-  //             image: product.image,
-  //             name: product.name,
-  //             price: product.price,
-  //             qty: cartItem.quantity,
-  //             quantity: product.quantity,
-  //             status: product.status,
-  //           };
-  //         });
-  //       });
-  //       Promise.all(promises).then((updatedCartItems) => {
-  //         setCartItem(updatedCartItems);
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
   function createNewCart() {
     const dataCreateCart = {
       idcustomer: localStorage.getItem('uid'),
@@ -300,6 +271,10 @@ function HomePageCustomer() {
       <Routes>
         <Route path="/:idcollection" element={<Pages productItems={productItems} addToCart={addToCart} />} />
         <Route path="/menu-creator" element={<MenuCreator productItems={productItems} addToCart={addToCart} />} />
+        <Route
+          path="/creator-prof/:idcreator"
+          element={<CreatorProfile productItems={productItems} addToCart={addToCart} />}
+        />
         <Route
           path="/menu-collection/:idtheme"
           element={<MenuCollection productItems={productItems} addToCart={addToCart} />}
