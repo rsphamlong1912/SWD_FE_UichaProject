@@ -1,7 +1,7 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined, MoreOutlined } from '@ant-design/icons';
 import { Row, Col, Card, Radio, Table, Button, Avatar, Typography, Dropdown, Space } from 'antd';
 
 import { useEffect, useState } from 'react';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -9,10 +9,11 @@ const { Title } = Typography;
 const columns = [
   {
     title: 'ID',
-    dataIndex: 'idcreator',
-    key: 'idcreator',
+    dataIndex: 'idagency',
+    key: 'idagency',
     width: '30%',
   },
+
   {
     title: 'NAME',
     dataIndex: 'name',
@@ -26,33 +27,25 @@ const columns = [
     dataIndex: 'email',
     width: '30%',
   },
-
   {
     title: 'STATUS',
     key: 'status',
     dataIndex: 'status',
-    width: '15%',
+    width: '30%',
   },
 ];
 
 const data2 = [
-  { idcreator: '2', name: 'Cáo Hồng Hạnh', status: 0, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 's' },
-  { idcreator: '1', name: 'Cáo Hồng ', status: 1, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 'g' },
-  { idcreator: '3', name: 'Cáo Hồng 1', status: null, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: '3' },
-  { idcreator: '4', name: 'Cáo Hồng 2', status: 0, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 't' },
-  { idcreator: '5', name: 'Cáo Hồng 3', status: 1, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 'd' },
-];
-
-const options = [
-  { label: 'Active', value: 1 },
-  { label: 'Inactive', value: null },
-  { label: 'Pending', value: 0 },
+  { idagency: '2', name: 'Cáo Hồng Hạnh', status: 0, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 's' },
+  { idagency: '1', name: 'Cáo Hồng ', status: 1, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 'g' },
+  { idagency: '3', name: 'Cáo Hồng 1', status: null, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: '3' },
+  { idagency: '4', name: 'Cáo Hồng 2', status: 0, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 't' },
+  { idagency: '5', name: 'Cáo Hồng 3', status: 1, idagency: 'H1iFm7FawHY0pv9C4IGIBOUgdi33', email: 'd' },
 ];
 
 function Customers() {
-  const [creators, setCreators] = useState([]);
+  const [agency, setAgency] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(0);
-  const [dataToDisplay, setDataToDisplay] = useState(creators);
 
   useEffect(() => {
     fetchApi();
@@ -60,167 +53,48 @@ function Customers() {
 
   //getApi
   const fetchApi = async () => {
-    const uid = localStorage.getItem('uid');
-    await fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/creator/?idagency=${uid}`)
+    await fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/agency/`)
       .then((res) => res.json())
       .then((result) => {
-        setCreators(
-          result.data?.map((item) => {
-            if (item.idagency !== localStorage.getItem('uid')) {
-              // eslint-disable-next-line array-callback-return
-              return;
-            }
-            return item;
-          }),
-        );
+        console.log(result.data);
+        setAgency(result.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  //updateApi
-  const updateData = async (id, status) => {
-    await fetch(
-      `https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/creator/update/${id}?status=${status}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          status: status,
-        }),
-      },
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((result) => {
-        fetchApi();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const dataToDisplay = agency?.map((data) => {
+    return {
+      key: `${data.idagency}`,
+      idagency: (
+        <>
+          <p>{data.idagency}</p>
+        </>
+      ),
 
-  const convertStatus = (id, status) => {
-    if (status === 0) {
-      /* Pending to active & inactive */
-      let result = window.confirm('Do you want to active this creator?');
-      if (result === true) {
-        status = true;
-        // console.log(status);
-      } else {
-        return;
-      }
-    } else {
-      let result = window.confirm('Do you want to Pending this creator?');
-      if (result === true) {
-        status = false;
-      } else {
-        return;
-      }
-    }
-    // chờ xử lý api
-    // else if (status === 1) {
-    //   /* Active to inactive */
-    //   let result = window.confirm('Do you want to Inactive this creator?');
-    //   if (result === true) {
-    //     status = null;
-    //     console.log(status);
-    //   } else {
-    //     return;
-    //   }
-    // } else {
-    //   /*Inactive to Active */
-    //   let result = window.confirm('Do you want to Inactive this creator?');
-    //   if (result === true) {
-    //     status = true;
-    //     console.log(status);
-    //   } else {
-    //     return;
-    //   }
-    // }
-    updateData(id, status);
-  };
+      name: (
+        <>
+          <Title level={5}>{data.name}</Title>
+        </>
+      ),
 
-  //filter Radio
-  const onChange = (e) => {
-    // console.log(`radio checked: ${e.target.value}`);
-    setSelectedFilter(e.target.value);
-    setDataToDisplay(
-      creators
-        .filter((creator) => creator.status === e.target.value)
-        ?.map((creator) => {
-          return {
-            key: `${creator.idcreator}`,
-            idcreator: (
-              <>
-                <p>{creator.idcreator}</p>
-              </>
-            ),
-            name: (
-              <>
-                <Avatar.Group>
-                  <Avatar className="shape-avatar" shape="square" size={40} src={creator.picture}></Avatar>
-                  <div className="avatar-info">
-                    <Title level={5}>{creator.name}</Title>
-                  </div>
-                </Avatar.Group>{' '}
-              </>
-            ),
-            email: (
-              <>
-                <div className="author-info">
-                  <p>{creator.email}</p>
-                </div>
-              </>
-            ),
-
-            status: (
-              <label onClick={() => convertStatus(creator.idcreator, creator.status)}>
-                {creator.status === 0 ? (
-                  <Button type="primary" className="tag-primary" style={{ backgroundColor: 'green' }}>
-                    Pending
-                  </Button>
-                ) : creator.status === 1 ? (
-                  <Button type="primary" className="tag-primary">
-                    Active
-                  </Button>
-                ) : (
-                  <Button type="primary" className="tag-primary" danger>
-                    Inactive
-                  </Button>
-                )}
-              </label>
-            ),
-          };
-        }),
-    );
-  };
+      email: (
+        <>
+          <div className="author-info">
+            <p>{data.email}</p>
+          </div>
+        </>
+      ),
+    };
+  });
 
   return (
     <>
       <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
-            <Card
-              bordered={false}
-              className="criclebox tablespace mb-24"
-              title="Creators Table"
-              extra={
-                <>
-                  <Radio.Group
-                    defaultValue={1}
-                    options={options}
-                    onChange={onChange}
-                    value={selectedFilter}
-                    optionType="button"
-                  />{' '}
-                </>
-              }
-            >
+            <Card bordered={false} className="criclebox tablespace mb-24" title="Agency Table">
               <div className="table-responsive">
                 <Table columns={columns} dataSource={dataToDisplay} pagination={false} className="ant-border-space" />
               </div>

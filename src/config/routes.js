@@ -10,6 +10,8 @@ const routes = {
   profile: '/profile',
   categories: '/categories',
   creatorDetail: 'creators/:idcreator',
+  //admin
+  customers: '/customers',
 };
 
 export default routes;

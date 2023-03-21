@@ -1,4 +1,5 @@
 import config from '~/config';
+import Customers from '~/pages/Admin/Customers/Customers';
 import Billing from '~/pages/Billing/Billing';
 import Categories from '~/pages/Categories/Categories';
 import { CreatorDetail } from '~/pages/Customers/CreatorDetail/CreatorDetail';
@@ -23,6 +24,7 @@ const privateRoutes = [
   { path: config.routes.billing, component: Billing },
   { path: config.routes.profile, component: Profile },
   { path: config.routes.categories, component: Categories },
+  { path: config.routes.customers, component: Customers },
 ];
 
 export { publicRoutes, privateRoutes };

@@ -1,47 +1,79 @@
-import { DollarCircleOutlined, ShoppingCartOutlined, TeamOutlined } from '@ant-design/icons';
-import { Button, Card, Col, List, Row } from 'antd';
+import {
+  DollarCircleOutlined,
+  LikeOutlined,
+  ShoppingCartOutlined,
+  TeamOutlined,
+  ToTopOutlined,
+} from '@ant-design/icons';
+import { Avatar, Button, Card, Col, List, Row } from 'antd';
 import Title from 'antd/lib/typography/Title';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { OrderInfor } from './OrderInfor';
 
 export const CreatorDetail = () => {
   let { idcreator } = useParams();
+  const [creator, setCreator] = useState([]);
+  const [information, setInformation] = useState([]);
 
   useEffect(() => {
     fetchApi();
+    getOrder();
   }, []);
 
-  //getApi
+  //getApi Id creator
   const fetchApi = async () => {
     await fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/creator/${idcreator}`)
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+        setCreator(result.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const getOrder = async () => {
+    fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/order/creator/${idcreator}`)
+      .then((res) => res.json())
+      .then((result) => {
+        // console.log(result.data);
+        setInformation(result.data);
+        console.log(result.data);
+        // setTotalPages(result.total);
+      })
+      .then(console.log);
+  };
+
+  const totalRevenue = (information) => {
+    return information.reduce((sum, order) => sum + Math.round(order.totalmoney), 0);
+  };
+
+  const total = totalRevenue(information).toLocaleString();
+
   const count = [
     {
       total: `Total Orders`,
-      title: '0',
+      title: `${information.length}`,
       icon: <ShoppingCartOutlined />,
       unit: 'orders',
     },
     {
-      total: 'Todal Revenue',
-      title: '0',
+      total: 'Total Revenue',
+      title: `${total}`,
       icon: <DollarCircleOutlined />,
       unit: '$',
     },
     {
-      total: 'Todal Users',
+      total: 'Total Users',
       title: '3,200',
       icon: <TeamOutlined />,
       unit: 'users',
+    },
+    {
+      total: 'Rank Creator',
+      title: 'Good',
+      icon: <LikeOutlined />,
     },
   ];
 
@@ -68,7 +100,9 @@ export const CreatorDetail = () => {
               </Card>
             </Col>
           ))}
-          <Col span={24} md={16} className="mb-24">
+        </Row>
+        <Row className="rowgap-vbox" gutter={[24, 0]}>
+          <Col span={24} md={18} className="mb-24">
             <OrderInfor />
           </Col>
           <Col span={24} lg={6} className="mb-24">
@@ -76,7 +110,22 @@ export const CreatorDetail = () => {
               bordered={false}
               className="header-solid h-full ant-invoice-card"
               title={[<h6 className="font-semibold m-0">Information Creator</h6>]}
-            ></Card>
+            >
+              <Avatar.Group>
+                <Avatar className="shape-avatar" shape="square" size={200} src={creator.picture}></Avatar>
+              </Avatar.Group>{' '}
+              <div className="avatar-info">
+                <p>
+                  <strong>ID Creator:</strong> {creator.idcreator}
+                </p>
+                <p>
+                  <strong>Name:</strong> {creator.name}
+                </p>{' '}
+                <p>
+                  <strong>Email:</strong> {creator.email}
+                </p>
+              </div>
+            </Card>
           </Col>
         </Row>
       </div>

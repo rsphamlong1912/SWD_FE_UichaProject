@@ -11,6 +11,7 @@ const Sidenav = ({ color }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const page = pathname.replace('/', '');
+  const role = localStorage.getItem('role');
 
   const handleLogout = async () => {
     try {
@@ -26,8 +27,7 @@ const Sidenav = ({ color }) => {
       console.log(e.message);
     }
   };
-
-  const items = [
+  const itemsAdmin = [
     {
       label: (
         <NavLink to="/dashboard">
@@ -46,7 +46,7 @@ const Sidenav = ({ color }) => {
     },
     {
       label: (
-        <NavLink to="/creators">
+        <NavLink to="/customers">
           <span
             className="icon"
             style={{
@@ -55,8 +55,169 @@ const Sidenav = ({ color }) => {
           >
             <Customer />
           </span>
-          <span className="label">Creators</span>
+          <span className="label">Customers</span>
         </NavLink>
+      ),
+      key: '2',
+    },
+    { label: 'Account Pages', key: '4' },
+    {
+      label: (
+        <NavLink to="/profile">
+          <span
+            className="icon"
+            style={{
+              background: page === 'profile' ? color : '',
+            }}
+          >
+            <Profile />
+          </span>
+          <span className="label">Profile</span>
+        </NavLink>
+      ),
+      key: '5',
+    },
+    {
+      label: (
+        <NavLink to="/sign-in" onClick={handleLogout}>
+          <span className="icon">
+            <Signout />
+          </span>
+          <span className="label">Sign Out</span>
+        </NavLink>
+      ),
+      key: '6',
+    },
+  ];
+
+  const itemsAgency = [
+    {
+      label: (
+        <NavLink to="/dashboard">
+          <span
+            className="icon"
+            style={{
+              background: page === 'dashboard' ? color : '',
+            }}
+          >
+            <Dashboard />
+          </span>
+          <span className="label">Dashboard</span>
+        </NavLink>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <>
+          <NavLink to="/creators">
+            <span
+              className="icon"
+              style={{
+                background: page === 'customers' ? color : '',
+              }}
+            >
+              <Customer />
+            </span>
+            <span className="label">Creators</span>
+          </NavLink>
+        </>
+      ),
+      key: '2',
+    },
+
+    {
+      label: (
+        <NavLink to="/categories">
+          <span className="icon">
+            <Categories />
+          </span>
+          <span className="label">Categories</span>
+        </NavLink>
+      ),
+      key: '7',
+    },
+
+    {
+      label: (
+        <NavLink to="/billing">
+          <span
+            className="icon"
+            style={{
+              background: page === 'billing' ? color : '',
+            }}
+          >
+            <Billing />
+          </span>
+          <span className="label">Billing</span>
+        </NavLink>
+      ),
+      key: '3',
+    },
+    { label: 'Account Pages', key: '4' },
+    {
+      label: (
+        <NavLink to="/profile">
+          <span
+            className="icon"
+            style={{
+              background: page === 'profile' ? color : '',
+            }}
+          >
+            <Profile />
+          </span>
+          <span className="label">Profile</span>
+        </NavLink>
+      ),
+      key: '5',
+    },
+    {
+      label: (
+        <NavLink to="/sign-in" onClick={handleLogout}>
+          <span className="icon">
+            <Signout />
+          </span>
+          <span className="label">Sign Out</span>
+        </NavLink>
+      ),
+      key: '6',
+    },
+  ];
+
+  const itemsCustomer = [
+    {
+      label: (
+        <NavLink to="/dashboard">
+          <span
+            className="icon"
+            style={{
+              background: page === 'dashboard' ? color : '',
+            }}
+          >
+            <Dashboard />
+          </span>
+          <span className="label">Dashboard</span>
+        </NavLink>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <>
+          {role === 'admin' ? (
+            <NavLink to="/creators">
+              <span
+                className="icon"
+                style={{
+                  background: page === 'customers' ? color : '',
+                }}
+              >
+                <Customer />
+              </span>
+              <span className="label">Creators</span>
+            </NavLink>
+          ) : null}
+        </>
       ),
       key: '2',
     },
@@ -126,7 +287,11 @@ const Sidenav = ({ color }) => {
         <span>UICHA Dashboard</span>
       </div>
       <hr />
-      <Menu items={items} theme="light" mode="inline" />
+      <Menu
+        items={role === 'admin' ? itemsAdmin : role === 'agency' ? itemsAgency : itemsCustomer}
+        theme="light"
+        mode="inline"
+      />
     </>
   );
 };

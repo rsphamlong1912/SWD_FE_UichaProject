@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined, MoreOutlined } from '@ant-design/icons';
 import { Card, Col, Descriptions, Dropdown, Radio, Row, Space } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const styleProcess = {
   position: 'absolute',
@@ -15,6 +16,8 @@ const convertToLocalDate = (inputDate) => {
 };
 
 export const OrderInfor = (props) => {
+  let { idcreator } = useParams();
+
   const [information, setInformation] = useState([
     {
       title: 'Oliver Liam',
@@ -31,16 +34,29 @@ export const OrderInfor = (props) => {
   }, []);
 
   const fetchApi = async () => {
-    const idagency = localStorage.getItem('uid');
-    fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/order/agency/${idagency}`)
+    fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/order/creator/${idcreator}`)
       .then((res) => res.json())
       .then((result) => {
-        console.log(result.data);
+        // console.log(result.data);
         setInformation(result.data);
+        console.log(result.data);
         // setTotalPages(result.total);
       })
       .then(console.log);
   };
+  console.log(information);
+  // const getOrderDetails = async () => {
+  //   const idagency = localStorage.getItem('uid');
+  //   fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080//orderdetail/${idcreator}/${}`)
+  //     .then((res) => res.json())
+  //     .then((result) => {
+  //       // console.log(result.data);
+  //       setInformation(result.data);
+  //       console.log(result.data);
+  //       // setTotalPages(result.total);
+  //     })
+  //     .then(console.log);
+  // };
 
   const items = [
     {
@@ -107,7 +123,7 @@ export const OrderInfor = (props) => {
                       {convertToLocalDate(data.datetime)}
                     </Descriptions.Item>
                     <Descriptions.Item label="Total Price" span={3}>
-                      $ {data.totalmoney}
+                      $ {Math.round(data.totalmoney).toLocaleString()}
                     </Descriptions.Item>
                   </Descriptions>
                 </div>
