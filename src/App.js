@@ -79,17 +79,17 @@ function App() {
             <Route
               path="/creator"
               element={
-                // <CreatorRoute>
-                <HomeCreator />
-                // </CreatorRoute>
+                <CreatorRoute>
+                  <HomeCreator />
+                </CreatorRoute>
               }
             />
             <Route
               path="/pending-creator"
               element={
-                // <CreatorRoute>
-                <PendingCreator />
-                // </CreatorRoute>
+                <CreatorRoute>
+                  <PendingCreator />
+                </CreatorRoute>
               }
             />
           </Routes>
