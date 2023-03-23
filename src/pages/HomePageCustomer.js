@@ -13,6 +13,7 @@ import ProtectedRoute from '~/routes/ProtectedRoute';
 import MenuCreator from './MenuCreator';
 import MenuCollection from './MenuCollection';
 import CreatorProfile from './CreatorProfile';
+import HistoryOrders from './HistoryOrders';
 
 function HomePageCustomer() {
   const { productItems } = Data;
@@ -284,6 +285,19 @@ function HomePageCustomer() {
           element={
             <ProtectedRoute>
               <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} setCartItem={setCartItem} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/history-orders"
+          element={
+            <ProtectedRoute>
+              <HistoryOrders
+                CartItem={CartItem}
+                addToCart={addToCart}
+                decreaseQty={decreaseQty}
+                setCartItem={setCartItem}
+              />
             </ProtectedRoute>
           }
         />
