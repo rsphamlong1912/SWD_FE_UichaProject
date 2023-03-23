@@ -142,12 +142,12 @@ function HomePageCustomer() {
     api
       .get(`/orderdetail/${idorder}`)
       .then((response) => {
-        console.log('cart ne', response.data.data);
-        const cartItemsFromApi = response.data.data;
+        console.log('cart ne', response.data.data.OrderCartDetails);
+        const cartItemsFromApi = response.data.data.OrderCartDetails;
         const updatedCartItems = [];
         for (const cartItem of cartItemsFromApi) {
           api
-            .get(`/product/${cartItem.idproduct}`)
+            .get(`/product/${cartItem.Product.idproduct}`)
             .then((response) => {
               const product = response.data.data;
               updatedCartItems.push({
@@ -160,8 +160,8 @@ function HomePageCustomer() {
                 qty: cartItem.quantity,
                 quantity: product.quantity,
                 status: product.status,
-                idcreator: cartItem.idcreator,
-                creatorname: cartItem.creatorname,
+                idcreator: cartItem.Product.Collection.Theme.Creator.idcreator,
+                creatorname: cartItem.Product.Collection.Theme.Creator.name,
               });
             })
             .catch((error) => {
@@ -242,11 +242,11 @@ function HomePageCustomer() {
     api
       .get(`/orderdetail/${localStorage.getItem('idorder')}`)
       .then((response) => {
-        const cartItemsFromApi = response.data.data;
+        const cartItemsFromApi = response.data.data.OrderCartDetails;
         for (const cartItem of cartItemsFromApi) {
           updatedOrderDetail.push({
             idorderdetail: cartItem.idorderdetail,
-            idproduct: cartItem.idproduct,
+            idproduct: cartItem.Product.idproduct,
             quantity: cartItem.quantity,
           });
         }
