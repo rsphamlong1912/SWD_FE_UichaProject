@@ -28,7 +28,7 @@ const Signin = () => {
         api
           .post('/login', data)
           .then((response) => {
-            console.log('API return:', response.data);
+            console.log('API return:', response);
             const { accessToken, refreshToken, accountdb } = response.data;
             const tokens = {
               accessToken: accessToken,
@@ -36,12 +36,7 @@ const Signin = () => {
             };
             //Lưu token vào local storage
             localStorage.setItem('tokens', JSON.stringify(tokens));
-            localStorage.setItem('role', accountdb);
-            if (accountdb.status) {
-              localStorage.setItem('role', 'creator');
-            } else {
-              localStorage.setItem('role', accountdb);
-            }
+            localStorage.setItem('role', accountdb.role || 'customer');
 
             if (accountdb === 'unknown') {
               window.location.href = '/sign-up';
