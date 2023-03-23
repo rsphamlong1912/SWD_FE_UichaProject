@@ -28,7 +28,7 @@ const Navbar = () => {
                 <Link to='/profile'>user account</Link>
               </li>
               <li>
-                <Link to='/track'>track my order</Link>
+                <Link to='/customer/history-orders'>track my order</Link>
               </li>
               <li>
                 <Link to='/contact'>contact</Link>
