@@ -252,19 +252,7 @@ function Creators() {
               }
             >
               <div className="table-responsive">
-                <Table
-                  // onRow={(record, rowIndex) => {
-                  //   return {
-                  //     onClick: (event) => {
-                  //       window.location.href = `/creators/${record.key}`;
-                  //     },
-                  //   };
-                  // }}
-                  columns={columns}
-                  dataSource={dataToDisplay}
-                  pagination={false}
-                  className="ant-border-space"
-                />
+                <Table columns={columns} dataSource={dataToDisplay} pagination={false} className="ant-border-space" />
               </div>
             </Card>
           </Col>

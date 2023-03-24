@@ -64,12 +64,7 @@ export const CreatorDetail = () => {
       icon: <DollarCircleOutlined />,
       unit: '$',
     },
-    {
-      total: 'Total Users',
-      title: '3,200',
-      icon: <TeamOutlined />,
-      unit: 'users',
-    },
+
     {
       total: 'Rank Creator',
       title: 'Good',

@@ -19,6 +19,8 @@ export const OrderInfor = (props) => {
   let { idcreator } = useParams();
 
   const [information, setInformation] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState('All');
+  const [dataToDisplay, setDataToDisplay] = useState(information);
 
   //   const [totalPages, setTotalPages] = useState(1);
 
@@ -30,14 +32,10 @@ export const OrderInfor = (props) => {
     fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/order/creator/${idcreator}`)
       .then((res) => res.json())
       .then((result) => {
-        // console.log(result.data);
         setInformation(result.data);
-        console.log(result.data);
-        // setTotalPages(result.total);
       })
       .then(console.log);
   };
-  console.log(information);
   // const getOrderDetails = async () => {
   //   const idagency = localStorage.getItem('uid');
   //   fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080//orderdetail/${idcreator}/${}`)
@@ -79,26 +77,26 @@ export const OrderInfor = (props) => {
     },
   ];
 
-  return (
-    <>
-      <Card
-        className="header-solid h-full"
-        bordered={false}
-        title={[<h6 className="font-semibold m-0">Billing Information</h6>]}
-        bodyStyle={{ paddingTop: '0' }}
-        extra={
-          <>
-            <Radio.Group defaultValue="a">
-              <Radio.Button value="a">All</Radio.Button>
-              <Radio.Button value="b">Pending</Radio.Button>
-              <Radio.Button value="c">Processing</Radio.Button>
-              <Radio.Button value="d">Completed</Radio.Button>
-            </Radio.Group>
-          </>
-        }
-      >
-        <Row gutter={[24, 24]}>
-          {information.map((data, index) => (
+  const options = [
+    { label: 'All', value: 'All' },
+    { label: 'Pending', value: 'Pending' },
+    { label: 'Completed', value: 'Completed' },
+    { label: 'Cancel', value: 'Cancel' },
+  ];
+
+  const onChange = (e) => {
+    setSelectedFilter(e.target.value);
+    console.log(e.target.value);
+    setDataToDisplay(
+      information
+        .filter((data) => {
+          if (e.target.value === 'All') {
+            return true;
+          }
+          return data.tracking === e.target.value;
+        })
+        ?.map((data, index) => {
+          return (
             <Col span={24} key={index}>
               <Card className="card-billing-info" bordered="false">
                 <div className="col-info">
@@ -136,8 +134,31 @@ export const OrderInfor = (props) => {
                 </div>
               </Card>
             </Col>
-          ))}
-        </Row>
+          );
+        }),
+    );
+  };
+
+  return (
+    <>
+      <Card
+        className="header-solid h-full"
+        bordered={false}
+        title={[<h6 className="font-semibold m-0">Billing Information</h6>]}
+        bodyStyle={{ paddingTop: '0' }}
+        extra={
+          <>
+            <Radio.Group
+              defaultValue={'All'}
+              options={options}
+              onChange={onChange}
+              value={selectedFilter}
+              optionType="button"
+            />{' '}
+          </>
+        }
+      >
+        <Row gutter={[24, 24]}>{dataToDisplay}</Row>
       </Card>
     </>
   );
