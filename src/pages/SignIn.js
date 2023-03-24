@@ -36,7 +36,7 @@ const Signin = () => {
             };
             //Lưu token vào local storage
             localStorage.setItem('tokens', JSON.stringify(tokens));
-            localStorage.setItem('role', accountdb.role || 'customer');
+            localStorage.setItem('role', accountdb.role || accountdb);
 
             if (accountdb === 'unknown') {
               window.location.href = '/sign-up';
