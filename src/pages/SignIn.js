@@ -34,6 +34,7 @@ const Signin = () => {
               accessToken: accessToken,
               refreshToken: refreshToken,
             };
+            console.log('role', accountdb);
             //Lưu token vào local storage
             localStorage.setItem('tokens', JSON.stringify(tokens));
             localStorage.setItem('role', accountdb.role || accountdb);
@@ -51,11 +52,6 @@ const Signin = () => {
             } else {
               window.location.href = '/profile';
             }
-
-            //Lấy accessToken
-            //const storedTokens = JSON.parse(localStorage.getItem('tokens'));
-            // const accessToken = storedTokens.accessToken;
-            // const refreshToken = storedTokens.refreshToken;
           })
           .catch((error) => {
             alert('Đăng nhập thất bại rồi!');
