@@ -15,14 +15,7 @@ const convertToLocalDate = (inputDate) => {
 };
 
 export const BillingInfor = (props) => {
-  const [information, setInformation] = useState([
-    {
-      title: 'Oliver Liam',
-      description: 'Viking Burrito',
-      address: 'oliver@burrito.com',
-      vat: 'FRB1235476',
-    },
-  ]);
+  const [information, setInformation] = useState([]);
 
   //   const [totalPages, setTotalPages] = useState(1);
 
@@ -40,6 +33,46 @@ export const BillingInfor = (props) => {
         // setTotalPages(result.total);
       })
       .then(console.log);
+  };
+
+  const updateTracking = async (idorder, tracking) => {
+    if (tracking === 'Pending') {
+      /* Pending to active & inactive */
+      let result = window.confirm('Order was completed?');
+      if (result === true) {
+        tracking = 'Completed';
+        // console.log(tracking);
+      } else {
+        return;
+      }
+    } else {
+      let result = window.confirm('Do you want to undo?');
+      if (result === true) {
+        tracking = 'Pending';
+      } else {
+        return;
+      }
+    }
+    await fetch(`https://ec2-3-0-97-134.ap-southeast-1.compute.amazonaws.com:8080/order/update-tracking/${idorder}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tracking,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        setTimeout(() => {
+          fetchApi();
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const items = [
@@ -70,6 +103,29 @@ export const BillingInfor = (props) => {
     },
   ];
 
+  const convertTracking = (idorder, tracking) => {
+    console.log(idorder);
+    console.log(tracking);
+
+    if (tracking === 'Pending') {
+      /* Pending to active & inactive */
+      let result = window.confirm('Order was completed?');
+      if (result === true) {
+        tracking = 'Completed';
+        // console.log(tracking);
+      } else {
+        return;
+      }
+    } else {
+      let result = window.confirm('Do you want to undo?');
+      if (result === true) {
+        tracking = 'Completed';
+      } else {
+        return;
+      }
+    }
+  };
+
   return (
     <>
       <Card
@@ -82,8 +138,8 @@ export const BillingInfor = (props) => {
             <Radio.Group defaultValue="a">
               <Radio.Button value="a">All</Radio.Button>
               <Radio.Button value="b">Pending</Radio.Button>
-              <Radio.Button value="c">Processing</Radio.Button>
               <Radio.Button value="d">Completed</Radio.Button>
+              <Radio.Button value="c">Cancel</Radio.Button>
             </Radio.Group>
           </>
         }
@@ -93,15 +149,20 @@ export const BillingInfor = (props) => {
             <Col span={24} key={index}>
               <Card className="card-billing-info" bordered="false">
                 <div className="col-info">
-                  <Descriptions title="Oliver Liam" style={{ position: 'relative' }}>
+                  <Descriptions title={data.Customer.name} style={{ position: 'relative' }}>
                     <Descriptions.Item span={3} style={styleProcess}>
-                      {data.tracking}
+                      <label style={{ cursor: 'pointer' }} onClick={(e) => updateTracking(data.idorder, data.tracking)}>
+                        {data.tracking}
+                      </label>
                     </Descriptions.Item>
                     <Descriptions.Item label="ID Order" span={3}>
                       {data.idorder}
                     </Descriptions.Item>
                     <Descriptions.Item label="ID Customer" span={3}>
                       {data.idcustomer}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="email" span={3}>
+                      {data.Customer.email}
                     </Descriptions.Item>
                     <Descriptions.Item label="Time" span={3}>
                       {convertToLocalDate(data.datetime)}

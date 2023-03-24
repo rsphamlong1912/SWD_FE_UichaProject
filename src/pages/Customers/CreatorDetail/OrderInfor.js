@@ -18,14 +18,7 @@ const convertToLocalDate = (inputDate) => {
 export const OrderInfor = (props) => {
   let { idcreator } = useParams();
 
-  const [information, setInformation] = useState([
-    {
-      title: 'Oliver Liam',
-      description: 'Viking Burrito',
-      address: 'oliver@burrito.com',
-      vat: 'FRB1235476',
-    },
-  ]);
+  const [information, setInformation] = useState([]);
 
   //   const [totalPages, setTotalPages] = useState(1);
 
@@ -109,21 +102,24 @@ export const OrderInfor = (props) => {
             <Col span={24} key={index}>
               <Card className="card-billing-info" bordered="false">
                 <div className="col-info">
-                  <Descriptions title="Oliver Liam" style={{ position: 'relative' }}>
+                  <Descriptions title={data.Customer.name} style={{ position: 'relative' }}>
                     <Descriptions.Item span={3} style={styleProcess}>
                       {data.tracking}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Email Customer" span={3}>
+                      {data.Customer.email}
                     </Descriptions.Item>
                     <Descriptions.Item label="ID Order" span={3}>
                       {data.idorder}
                     </Descriptions.Item>
                     <Descriptions.Item label="ID Customer" span={3}>
-                      {data.idcustomer}
+                      {data.Customer.idcustomer}
                     </Descriptions.Item>
                     <Descriptions.Item label="Time" span={3}>
                       {convertToLocalDate(data.datetime)}
                     </Descriptions.Item>
                     <Descriptions.Item label="Total Price" span={3}>
-                      $ {Math.round(data.totalmoney).toLocaleString()}
+                      $ {Math.round(data.totalmoneyCreator).toLocaleString()}
                     </Descriptions.Item>
                   </Descriptions>
                 </div>

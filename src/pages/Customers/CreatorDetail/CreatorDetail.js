@@ -46,7 +46,7 @@ export const CreatorDetail = () => {
   };
 
   const totalRevenue = (information) => {
-    return information.reduce((sum, order) => sum + Math.round(order.totalmoney), 0);
+    return information.reduce((sum, order) => sum + Math.round(order.totalmoneyCreator), 0);
   };
 
   const total = totalRevenue(information).toLocaleString();
