@@ -211,3 +211,7 @@ li a:hover {
   padding: 5px 10px;
   border-radius: 5px;
 }
+
+.general p {
+  color: #224c36;
+}

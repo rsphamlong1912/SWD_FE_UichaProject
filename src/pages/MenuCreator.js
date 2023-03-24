@@ -28,7 +28,8 @@ const MenuCreator = ({ productItems, addToCart, CartItem, shopItems, productList
       api
         .get(`/creator/?idagency=H1iFm7FawHY0pv9C4IGIBOUgdi33`)
         .then((response) => {
-          setCreators(response.data.data);
+          let filteredCreators = response.data.data.filter((creator) => creator.status == 1);
+          setCreators(filteredCreators);
         })
         .catch((error) => {
           console.log('Lỗi fetch creators', error);
