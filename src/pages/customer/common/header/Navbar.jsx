@@ -25,14 +25,12 @@ const Navbar = () => {
                 <Link to='/customer/menu-creator'>Back to Shopping</Link>
               </li>
               <li>
-                <Link to='/profile'>user account</Link>
-              </li>
-              <li>
                 <Link to='/customer/history-orders'>track my order</Link>
               </li>
               <li>
-                <Link to='/contact'>contact</Link>
+                <Link to='/profile'>user account</Link>
               </li>
+
             </ul>
 
             <button className='toggle' onClick={() => setMobileMenu(!MobileMenu)}>
