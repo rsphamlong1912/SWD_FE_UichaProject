@@ -24,7 +24,7 @@ const HistoryOrders = ({ CartItem, addToCart, decreaseQty, setCartItem }) => {
   console.log('order ne', orders);
   return (
     <>
-      <div class="container">
+      <div class="container-order">
         <h2>
           Danh sách đơn hàng <small></small>
         </h2>
